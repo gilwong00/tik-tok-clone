@@ -1,19 +1,27 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { LoginScreen } from '../../screens';
+import { AuthScreen } from '../../screens';
+import { ScreenNames } from '../../@types';
+import { SafeContainer } from '../../components';
 
-const Stack = createStackNavigator();
+type AuthNavigatorProps = {
+  [ScreenNames.AUTH]: undefined;
+};
+
+const Stack = createStackNavigator<AuthNavigatorProps>();
 
 const Auth = () => {
   return (
-    <Stack.Navigator
-      screenOptions={{
-        title: '',
-        headerShown: false
-      }}
-    >
-      <Stack.Screen name='Login' component={LoginScreen} />
-    </Stack.Navigator>
+    <SafeContainer>
+      <Stack.Navigator
+        screenOptions={{
+          title: '',
+          headerShown: false
+        }}
+      >
+        <Stack.Screen name={ScreenNames.AUTH} component={AuthScreen} />
+      </Stack.Navigator>
+    </SafeContainer>
   );
 };
 

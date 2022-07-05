@@ -1,21 +1,15 @@
 import React from 'react';
 // import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, SafeAreaView } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { AuthNavigator } from './src/navigators';
+import { AppNavigator, AuthNavigator } from './src/navigators';
+import { useUserStore } from './src/store';
 
 export default function App() {
+  const { user } = useUserStore();
+
   return (
-    <SafeAreaView style={styles.container}>
-      <NavigationContainer>
-        <AuthNavigator />
-      </NavigationContainer>
-    </SafeAreaView>
+    <NavigationContainer>
+      {user ? <AppNavigator /> : <AuthNavigator />}
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1
-  }
-});
