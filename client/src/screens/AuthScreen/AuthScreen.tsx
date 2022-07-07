@@ -21,12 +21,11 @@ const AuthScreen = () => {
   );
 
   const handleSubmit = useCallback(() => {
-    console.log('hitt');
     // TODO: add call to api once backend is setup
     if (email.length && password.length) {
       setUser({ email, password });
     }
-  }, []);
+  }, [email, password, setUser]);
 
   const authText: string = mode === AuthMode.LOGIN ? 'Log In' : 'Sign Up';
 
