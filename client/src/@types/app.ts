@@ -5,5 +5,6 @@ export enum ScreenNames {
   ADD = 'add',
   PROFILE = 'profile',
   DISCOVER = 'discover',
-  INBOX = 'inbox'
+  INBOX = 'inbox',
+  SAVE_POST = 'save_post'
 }

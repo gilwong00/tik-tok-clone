@@ -1,7 +1,7 @@
 import React from 'react';
 // import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
-import { AppNavigator, AuthNavigator } from './src/navigators';
+import { AuthNavigator, HomeNavigator } from './src/navigators';
 import { useUserStore } from './src/store';
 
 export default function App() {
@@ -9,7 +9,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      {user ? <AppNavigator /> : <AuthNavigator />}
+      {user ? <HomeNavigator /> : <AuthNavigator />}
     </NavigationContainer>
   );
 }

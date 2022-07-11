@@ -2,9 +2,9 @@ import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
   tabBarStyle: {
-    height: 90,
+    height: 100,
     backgroundColor: '#000',
-    opacity: 0.97
+    paddingBottom: 80
   },
   tabBarItemStyle: {
     height: 50,
@@ -15,6 +15,8 @@ export const styles = StyleSheet.create({
   },
   tabBarLabelStyle: {
     color: '#fff',
-    textTransform: 'capitalize'
+    textTransform: 'capitalize',
+    textAlign: 'center',
+    fontSize: 10
   }
 });

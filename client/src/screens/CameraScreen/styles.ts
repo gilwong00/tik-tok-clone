@@ -9,17 +9,25 @@ export const styles = StyleSheet.create({
     flex: 1,
     padding: 0,
     backgroundColor: 'black'
-    // aspectRatio: 9 / 16
   },
   actionContainer: {
     position: 'absolute',
-    bottom: 30,
-    flexDirection: 'row',
+    bottom: 20,
     width: '100%'
   },
-  recordBtnContainer: {
-    flex: 1,
+  mediaContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
     marginHorizontal: 30,
+    alignItems: 'center',
+    border: 'none',
+    width: '100%'
+    // backgroundColor: 'yellow'
+  },
+  recordBtnContainer: {
+    width: 150,
+    display: 'flex',
+    justifyContent: 'center',
     alignItems: 'center'
   },
   recordBtn: {
@@ -29,5 +37,38 @@ export const styles = StyleSheet.create({
     borderRadius: 100,
     height: 80,
     width: 80
+  },
+  galleryContainer: {
+    // width: 60,
+    // display: 'flex',
+    // alignItems: 'flex-end',
+    // justifyContent: 'flex-end'
+  },
+  galleryBtn: {
+    borderColor: '#fff',
+    borderWidth: 2,
+    borderRadius: 10,
+    overflow: 'hidden',
+    width: 50,
+    height: 50
+  },
+  galleryIcon: {
+    width: 50,
+    height: 50
+  },
+  cameraOptionsContainer: {
+    position: 'absolute',
+    top: 60,
+    right: 0,
+    marginHorizontal: 20
+  },
+  cameraBtnText: {
+    color: '#fff',
+    fontSize: 12,
+    textAlign: 'center'
+  },
+  cameraOptionBtn: {
+    alignItems: 'center',
+    marginBottom: 25
   }
 });

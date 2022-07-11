@@ -4,3 +4,4 @@ export * from './FeedScreen';
 export * from './ProfileScreen';
 export * from './DiscoverScreen';
 export * from './InboxScreen';
+export * from './SavePostScreen';
