@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { TouchableOpacity, View, Image, Text } from 'react-native';
+import { View } from 'react-native';
 import { Camera, CameraType, FlashMode, VideoQuality } from 'expo-camera';
 import { Audio } from 'expo-av';
 import {
@@ -10,10 +10,10 @@ import {
 } from 'expo-image-picker';
 import { Asset, getAssetsAsync } from 'expo-media-library';
 import { useIsFocused } from '@react-navigation/core';
-import { Ionicons } from '@expo/vector-icons';
 import { styles } from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { ScreenNames } from '../../@types';
+import { CameraActions, CameraControls } from '../../components';
 
 const CameraScreen = () => {
   // Camera state
@@ -122,62 +122,23 @@ const CameraScreen = () => {
             flashMode={flashMode}
             onCameraReady={() => setIsCameraReady(true)}
           >
-            <View style={styles.cameraOptionsContainer}>
-              <TouchableOpacity
-                style={styles.cameraOptionBtn}
-                onPress={toggleCameraPosition}
-              >
-                <Ionicons
-                  name={
-                    cameraPosition === CameraType.back
-                      ? 'camera-reverse'
-                      : 'camera-reverse-outline'
-                  }
-                  size={24}
-                  color='white'
-                />
-                <Text style={styles.cameraBtnText}>Flip</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.cameraOptionBtn}
-                onPress={toggleFlash}
-              >
-                <Ionicons
-                  name={flashMode === FlashMode.on ? 'flash' : 'flash-off'}
-                  size={24}
-                  color='white'
-                />
-                <Text style={styles.cameraBtnText}>Flash</Text>
-              </TouchableOpacity>
-            </View>
-            {/* TODO move this to own component */}
-            <View style={styles.actionContainer}>
-              <View style={styles.mediaContainer}>
-                <View style={styles.recordBtnContainer}>
-                  <TouchableOpacity
-                    style={styles.recordBtn}
-                    disabled={!isCameraReady}
-                    onLongPress={recordVideo}
-                    onPressOut={stopRecording}
-                  />
-                </View>
-                <View style={styles.galleryContainer}>
-                  <TouchableOpacity
-                    style={styles.galleryBtn}
-                    onPress={selectAssetFromGallery}
-                  >
-                    {!!galleryItems[0] && (
-                      <Image
-                        style={styles.galleryIcon}
-                        source={{
-                          uri: galleryItems[0]?.uri ?? ''
-                        }}
-                      />
-                    )}
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
+            <CameraControls
+              cameraPosition={
+                cameraPosition === CameraType.back
+                  ? 'camera-reverse'
+                  : 'camera-reverse-outline'
+              }
+              flashMode={flashMode === FlashMode.on ? 'flash' : 'flash-off'}
+              toggleCameraPosition={toggleCameraPosition}
+              toggleFlash={toggleFlash}
+            />
+            <CameraActions
+              isCameraReady={isCameraReady}
+              galleryItem={galleryItems[0] ?? null}
+              recordVideo={recordVideo}
+              stopRecording={stopRecording}
+              selectAssetFromGallery={selectAssetFromGallery}
+            />
           </Camera>
         )}
       </View>
