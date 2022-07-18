@@ -1,10 +1,11 @@
 import { StyleSheet } from 'react-native';
+import { COLORS } from '../../constants';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 30,
-    backgroundColor: '#fff'
+    backgroundColor: COLORS.WHITE
   },
   form: {
     padding: 20,
@@ -17,7 +18,7 @@ export const styles = StyleSheet.create({
   },
   preview: {
     aspectRatio: 9 / 16,
-    backgroundColor: '#000',
+    backgroundColor: COLORS.BLACK,
     width: 60
   },
   btnContainer: {
@@ -30,7 +31,7 @@ export const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    borderColor: 'lightgray',
+    borderColor: COLORS.LIGHT_GRAY,
     borderWidth: 1,
     padding: 10,
     justifyContent: 'center',
@@ -39,7 +40,7 @@ export const styles = StyleSheet.create({
   },
   btnText: {
     fontWeight: '700',
-    color: '#000',
+    color: COLORS.BLACK,
     fontSize: 16,
     paddingLeft: 10
   },
@@ -51,9 +52,9 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 4,
     marginHorizontal: 10,
-    backgroundColor: '#ff4040'
+    backgroundColor: COLORS.CORAL_RED
   },
   postBtnText: {
-    color: '#FFF'
+    color: COLORS.WHITE
   }
 });

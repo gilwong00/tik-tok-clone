@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { COLORS } from '../../constants';
 
 export const styles = StyleSheet.create({
   actionContainer: {
@@ -22,8 +23,8 @@ export const styles = StyleSheet.create({
   },
   recordBtn: {
     borderWidth: 8,
-    borderColor: 'darkred',
-    backgroundColor: '#ff4040',
+    borderColor: COLORS.DARK_RED,
+    backgroundColor: COLORS.CORAL_RED,
     borderRadius: 100,
     height: 80,
     width: 80
@@ -35,7 +36,7 @@ export const styles = StyleSheet.create({
     // justifyContent: 'flex-end'
   },
   galleryBtn: {
-    borderColor: '#fff',
+    borderColor: COLORS.WHITE,
     borderWidth: 2,
     borderRadius: 10,
     overflow: 'hidden',

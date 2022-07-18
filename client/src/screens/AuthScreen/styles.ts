@@ -1,16 +1,17 @@
 import { StyleSheet } from 'react-native';
+import { COLORS } from '../../constants';
 
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 30,
-    backgroundColor: '#fff'
+    backgroundColor: COLORS.WHITE
   },
   headerText: {
     fontSize: 20,
     fontWeight: '700',
     textAlign: 'center',
-    color: '#000',
+    color: COLORS.BLACK,
     marginBottom: 25
   },
   formContainer: {
@@ -33,7 +34,7 @@ export const styles = StyleSheet.create({
     marginTop: 10
   },
   authBtnText: {
-    color: '#fff',
+    color: COLORS.WHITE,
     fontWeight: 'bold'
   }
 });

@@ -67,7 +67,11 @@ const AppNavigator = () => {
         component={CameraScreen}
       />
       <Tab.Screen name={ScreenNames.INBOX} component={InboxScreen} />
-      <Tab.Screen name={ScreenNames.PROFILE} component={ProfileScreen} />
+      <Tab.Screen
+        name={ScreenNames.PROFILE}
+        options={{ headerShown: false }}
+        component={ProfileScreen}
+      />
     </Tab.Navigator>
   );
 };

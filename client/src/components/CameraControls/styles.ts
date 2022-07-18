@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { COLORS } from '../../constants';
 
 export const styles = StyleSheet.create({
   cameraOptionsContainer: {
@@ -8,7 +9,7 @@ export const styles = StyleSheet.create({
     marginHorizontal: 20
   },
   cameraBtnText: {
-    color: '#fff',
+    color: COLORS.WHITE,
     fontSize: 12,
     textAlign: 'center'
   },

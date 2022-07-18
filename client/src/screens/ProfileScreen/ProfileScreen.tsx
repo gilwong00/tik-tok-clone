@@ -1,12 +1,23 @@
-import { View, Text } from 'react-native';
 import React from 'react';
+import { View, Text, Dimensions } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
+import { ProfileHeader, ProfileSection } from '../../components';
+import { useUserStore } from '../../store';
+import { styles } from './styles';
 
-type Props = {};
+const ProfileScreen = () => {
+  const { user } = useUserStore();
 
-const ProfileScreen = (props: Props) => {
   return (
-    <View>
-      <Text>ProfileScreen</Text>
+    <View style={styles.container}>
+      <ProfileHeader user={user} />
+      <ScrollView
+        style={{
+          height: Dimensions.get('screen').height - 280
+        }}
+      >
+        <ProfileSection />
+      </ScrollView>
     </View>
   );
 };

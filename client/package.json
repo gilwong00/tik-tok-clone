@@ -29,6 +29,7 @@
 		"react-native-flipper": "^0.152.0",
 		"react-native-gesture-handler": "^2.5.0",
 		"react-native-safe-area-context": "^4.3.1",
+		"react-native-user-avatar": "^1.0.8",
 		"react-native-web": "0.17.7",
 		"zustand": "^4.0.0-rc.1"
 	},
