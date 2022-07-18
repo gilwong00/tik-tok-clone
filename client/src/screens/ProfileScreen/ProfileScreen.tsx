@@ -1,7 +1,6 @@
 import React from 'react';
-import { View, Text, Dimensions } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-import { ProfileHeader, ProfileSection } from '../../components';
+import { View } from 'react-native';
+import { Posts, ProfileHeader, ProfileSection } from '../../components';
 import { useUserStore } from '../../store';
 import { styles } from './styles';
 
@@ -11,13 +10,10 @@ const ProfileScreen = () => {
   return (
     <View style={styles.container}>
       <ProfileHeader user={user} />
-      <ScrollView
-        style={{
-          height: Dimensions.get('screen').height - 280
-        }}
-      >
+      <View style={styles.sectionContainer}>
         <ProfileSection />
-      </ScrollView>
+        <Posts posts={[]} />
+      </View>
     </View>
   );
 };

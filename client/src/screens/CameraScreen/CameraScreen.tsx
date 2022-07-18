@@ -14,6 +14,7 @@ import { styles } from './styles';
 import { useNavigation } from '@react-navigation/native';
 import { ScreenNames } from '../../@types';
 import { CameraActions, CameraControls } from '../../components';
+import { getThumbnailAsync } from 'expo-video-thumbnails';
 
 const CameraScreen = () => {
   // Camera state
@@ -56,14 +57,33 @@ const CameraScreen = () => {
     checkForCameraPermission();
   }, []);
 
-  const redirectToSavePostScreen = useCallback((uri: string) => {
-    navigation.navigate(
-      ScreenNames.SAVE_POST as never,
-      {
-        mediaUri: uri
-      } as never
-    );
-  }, []);
+  const redirectToSavePostScreen = useCallback(
+    (uri: string, thumbnail: string) => {
+      navigation.navigate(
+        ScreenNames.SAVE_POST as never,
+        {
+          mediaUri: uri,
+          thumbnail
+        } as never
+      );
+    },
+    []
+  );
+
+  const generateThumbnail = async (source: string): Promise<string> => {
+    try {
+      const { uri } = await getThumbnailAsync(
+        source ?? 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
+        {
+          time: 1000
+        }
+      );
+      return uri;
+    } catch (e) {
+      console.warn(e);
+      return '';
+    }
+  };
 
   const recordVideo = useCallback(async () => {
     if (cameraRef) {
@@ -72,7 +92,8 @@ const CameraScreen = () => {
           maxDuration: 60,
           quality: VideoQuality['480p']
         });
-        return redirectToSavePostScreen(data.uri);
+        const thumbnail = await generateThumbnail(data.uri);
+        return redirectToSavePostScreen(data.uri, thumbnail);
       } catch (err) {
         console.error(err);
       }
@@ -91,7 +112,10 @@ const CameraScreen = () => {
       quality: 1 // smaller the number the lower the quality
     });
 
-    if (!results.cancelled) redirectToSavePostScreen(results.uri);
+    if (!results.cancelled) {
+      const thumbnail = await generateThumbnail(results.uri);
+      redirectToSavePostScreen(results.uri, thumbnail);
+    }
   }, []);
 
   const toggleCameraPosition = useCallback(() => {

@@ -6,7 +6,10 @@ import { Ionicons } from '@expo/vector-icons';
 import { styles } from './style';
 
 type Props = {
-  route: RouteProp<{ params: { mediaUri: string } }, 'params'>;
+  route: RouteProp<
+    { params: { mediaUri: string; thumbnail: string } },
+    'params'
+  >;
 };
 
 const SavePostScreen: React.FC<Props> = ({ route }) => {
