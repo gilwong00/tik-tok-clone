@@ -5,27 +5,41 @@ package graph
 
 import (
 	"context"
-	"crypto/rand"
 	"fmt"
-
-	"github.com/gilwong00/tik-tok-clone/server/graph/generated"
-	"github.com/gilwong00/tik-tok-clone/server/graph/model"
+	"server/graph/generated"
+	"server/graph/model"
 )
 
 // CreateTodo is the resolver for the createTodo field.
 func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
 	todo := &model.Todo{
+		ID:   fmt.Sprint(len(r.TodosList) + 1),
 		Text: input.Text,
-		ID:   fmt.Sprintf("T%d", rand.Int()),
-		User: &model.User{ID: input.UserID, Name: "user " + input.UserID},
+		Done: false,
+		User: &model.User{
+			ID:   input.UserID,
+			Name: fmt.Sprintf("MEEP%s", fmt.Sprint(len(r.TodosList)+1)),
+		},
 	}
-	r.todos = append(r.todos, todo)
+
+	r.TodosList = append(r.TodosList, todo)
 	return todo, nil
 }
 
 // Todos is the resolver for the todos field.
 func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	return r.todos, nil
+	return r.TodosList, nil
+	// return []*model.Todo{
+	// 	&model.Todo{
+	// 		ID:   "123",
+	// 		Text: "MEEP",
+	// 		Done: false,
+	// 		User: &model.User{
+	// 			ID:   "user",
+	// 			Name: "test",
+	// 		},
+	// 	},
+	// }, nil
 }
 
 // Mutation returns generated.MutationResolver implementation.

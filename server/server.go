@@ -4,11 +4,11 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"server/graph"
+	"server/graph/generated"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
-	"github.com/gilwong00/tik-tok-clone/server/graph"
-	"github.com/gilwong00/tik-tok-clone/server/graph/generated"
 )
 
 const defaultPort = "8080"

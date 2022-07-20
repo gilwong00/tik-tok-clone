@@ -1,11 +1,11 @@
 package graph
 
-import "github.com/gilwong00/tik-tok-clone/server/graph/model"
+import "server/graph/model"
 
 // This file will not be regenerated automatically.
 //
 // It serves as dependency injection for your app, add any dependencies you require here.
 
 type Resolver struct {
-	todos []*model.Todo
+	TodosList []*model.Todo
 }
