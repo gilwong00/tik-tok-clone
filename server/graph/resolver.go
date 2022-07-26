@@ -7,5 +7,5 @@ import "server/graph/model"
 // It serves as dependency injection for your app, add any dependencies you require here.
 
 type Resolver struct {
-	TodosList []*model.Todo
+	UserPosts []*model.Post
 }
