@@ -7,20 +7,35 @@ import { SafeContainer } from '../SafeContainer';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type Props = {
-  user: any;
+  leftIcon?: 'search' | 'arrow-back';
+  rightIcon?: 'menu' | 'save';
+  title: string;
+  handleLeftIconPress: () => void;
+  handleRightIconPress: () => void;
 };
 
-const ProfileHeader: React.FC<Props> = ({ user }) => {
+const ProfileHeader: React.FC<Props> = ({
+  leftIcon,
+  title,
+  rightIcon,
+  handleLeftIconPress,
+  handleRightIconPress
+}) => {
   return (
     <SafeContainer>
       <View style={styles.container}>
-        <TouchableOpacity onPress={() => {}}>
-          <Ionicons name='search' size={24} color={COLORS.BLACK} />
-        </TouchableOpacity>
-        <Text style={styles.profileName}>test user</Text>
-        <TouchableOpacity onPress={() => {}}>
-          <Ionicons name='menu' size={24} color={COLORS.BLACK} />
-        </TouchableOpacity>
+        {leftIcon?.length && (
+          <TouchableOpacity onPress={handleLeftIconPress}>
+            <Ionicons name={leftIcon} size={24} color={COLORS.BLACK} />
+          </TouchableOpacity>
+        )}
+
+        <Text style={styles.profileName}>{title}</Text>
+        {rightIcon?.length && (
+          <TouchableOpacity onPress={handleRightIconPress}>
+            <Ionicons name={rightIcon} size={24} color={COLORS.BLACK} />
+          </TouchableOpacity>
+        )}
       </View>
     </SafeContainer>
   );

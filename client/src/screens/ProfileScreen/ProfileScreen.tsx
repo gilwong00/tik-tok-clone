@@ -9,7 +9,13 @@ const ProfileScreen = () => {
 
   return (
     <View style={styles.container}>
-      <ProfileHeader user={user} />
+      <ProfileHeader
+        title={'Joe Dow'}
+        leftIcon='search'
+        rightIcon='menu'
+        handleLeftIconPress={() => {}}
+        handleRightIconPress={() => {}}
+      />
       <View style={styles.sectionContainer}>
         <ProfileSection />
         <Posts posts={[]} />

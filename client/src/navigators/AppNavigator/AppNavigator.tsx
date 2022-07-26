@@ -4,6 +4,7 @@ import { ScreenNames } from '../../@types';
 import {
   CameraScreen,
   DiscoverScreen,
+  EditProfileScreen,
   FeedScreen,
   InboxScreen,
   ProfileScreen
@@ -17,6 +18,7 @@ type AppNavigatorProps = {
   [ScreenNames.PROFILE]: undefined;
   [ScreenNames.DISCOVER]: undefined;
   [ScreenNames.INBOX]: undefined;
+  [ScreenNames.EDIT_PROFILE]: undefined;
 };
 
 const Tab = createBottomTabNavigator<AppNavigatorProps>();

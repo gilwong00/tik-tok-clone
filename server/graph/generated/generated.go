@@ -283,7 +283,6 @@ func (e *executableSchema) Exec(ctx context.Context) graphql.ResponseHandler {
 	inputUnmarshalMap := graphql.BuildUnmarshalerMap(
 		ec.unmarshalInputAuthUser,
 		ec.unmarshalInputNewPost,
-		ec.unmarshalInputNewTodo,
 		ec.unmarshalInputNewUser,
 	)
 	first := true
@@ -375,11 +374,6 @@ type Query {
   userPosts(userId: ID!): [Post!]!
   post(userId: ID!): Post
   user(userId: ID!): User!
-}
-
-input NewTodo {
-  text: String!
-  userId: String!
 }
 
 input NewUser {
@@ -3568,42 +3562,6 @@ func (ec *executionContext) unmarshalInputNewPost(ctx context.Context, obj inter
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
 			it.Description, err = ec.unmarshalNString2string(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		}
-	}
-
-	return it, nil
-}
-
-func (ec *executionContext) unmarshalInputNewTodo(ctx context.Context, obj interface{}) (model.NewTodo, error) {
-	var it model.NewTodo
-	asMap := map[string]interface{}{}
-	for k, v := range obj.(map[string]interface{}) {
-		asMap[k] = v
-	}
-
-	fieldsInOrder := [...]string{"text", "userId"}
-	for _, k := range fieldsInOrder {
-		v, ok := asMap[k]
-		if !ok {
-			continue
-		}
-		switch k {
-		case "text":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("text"))
-			it.Text, err = ec.unmarshalNString2string(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "userId":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("userId"))
-			it.UserID, err = ec.unmarshalNString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}

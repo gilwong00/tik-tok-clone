@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import UserAvatar from 'react-native-user-avatar';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { styles } from './styles';
-import { SafeContainer } from '../SafeContainer';
 import { COLORS } from '../../constants';
+import { useNavigation } from '@react-navigation/native';
+import { ScreenNames } from '../../@types';
 
 type Props = {};
 
 const ProfileSection: React.FC<Props> = () => {
+  const navigation = useNavigation();
+
+  const handleEditPress = useCallback(() => {
+    navigation.navigate(ScreenNames.EDIT_PROFILE as never);
+  }, []);
   return (
     <View style={styles.container}>
       <UserAvatar
@@ -32,7 +38,7 @@ const ProfileSection: React.FC<Props> = () => {
         </View>
       </View>
 
-      <TouchableOpacity style={styles.editProfileBtn}>
+      <TouchableOpacity style={styles.editProfileBtn} onPress={handleEditPress}>
         <Text>Edit Profile</Text>
       </TouchableOpacity>
     </View>

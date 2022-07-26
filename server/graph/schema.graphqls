@@ -10,6 +10,7 @@ type User {
   lastName: String!
   email: String!
   password: String!
+  avatarUri: String!
   createdAt: Date!
   updatedAt: Date!
 }
@@ -28,11 +29,6 @@ type Query {
   userPosts(userId: ID!): [Post!]!
   post(userId: ID!): Post
   user(userId: ID!): User!
-}
-
-input NewTodo {
-  text: String!
-  userId: String!
 }
 
 input NewUser {

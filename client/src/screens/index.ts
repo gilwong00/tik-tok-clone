@@ -5,3 +5,4 @@ export * from './ProfileScreen';
 export * from './DiscoverScreen';
 export * from './InboxScreen';
 export * from './SavePostScreen';
+export * from './EditProfileScreen';

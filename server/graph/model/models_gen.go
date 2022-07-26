@@ -13,11 +13,6 @@ type NewPost struct {
 	Description string `json:"description"`
 }
 
-type NewTodo struct {
-	Text   string `json:"text"`
-	UserID string `json:"userId"`
-}
-
 type NewUser struct {
 	FirstName string `json:"firstName"`
 	LastName  string `json:"lastName"`
