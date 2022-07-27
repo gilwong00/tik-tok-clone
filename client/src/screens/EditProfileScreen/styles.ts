@@ -28,5 +28,18 @@ export const styles = StyleSheet.create({
   imageOverlay: {
     backgroundColor: 'rgba(0,0,0,0.5)',
     ...StyleSheet.absoluteFillObject
+  },
+  fieldContainer: {
+    marginTop: 20,
+    padding: 20
+  },
+  itemRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  value: {
+    paddingRight: 5
   }
 });

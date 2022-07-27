@@ -5,3 +5,4 @@ export * from './CameraControls';
 export * from './ProfileHeader';
 export * from './ProfileSection';
 export * from './Posts';
+export * from './EditField';
