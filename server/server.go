@@ -6,14 +6,26 @@ import (
 	"os"
 	"server/graph"
 	"server/graph/generated"
+	"server/pkg/db"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/go-pg/pg/v10"
 )
 
 const defaultPort = "8080"
 
 func main() {
+	DB := db.Init(&pg.Options{
+		User:     "postgres",
+		Password: "postgres",
+		Database: "tik_tok_pg",
+	})
+
+	defer DB.Close()
+
+	DB.AddQueryHook((db.Logger{}))
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = defaultPort

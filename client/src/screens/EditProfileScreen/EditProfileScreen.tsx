@@ -1,5 +1,5 @@
+import React, { useCallback, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import React, { useCallback } from 'react';
 import { View, TouchableOpacity, Image } from 'react-native';
 import { ProfileHeader, SafeContainer } from '../../components';
 import { COLORS } from '../../constants';
