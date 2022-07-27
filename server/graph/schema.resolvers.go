@@ -46,6 +46,17 @@ func (r *queryResolver) User(ctx context.Context, userID string) (*model.User, e
 	panic(fmt.Errorf("not implemented"))
 }
 
+// GetFeed is the resolver for the getFeed field.
+func (r *queryResolver) GetFeed(ctx context.Context, userID string, page int, limit int) ([]*model.Post, error) {
+	feed, err := r.PostRepository.GetFeed(userID, page, limit)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return feed, nil
+}
+
 // Mutation returns generated.MutationResolver implementation.
 func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResolver{r} }
 

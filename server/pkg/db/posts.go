@@ -20,7 +20,7 @@ func (p *PostsRepository) GetUsersPosts(userId int) ([]*model.Post, error) {
 	return posts, nil
 }
 
-func (p *PostsRepository) GetOtherUsersPosts(userId int, page int, limit int) ([]*model.Post, error) {
+func (p *PostsRepository) GetFeed(userId string, page int, limit int) ([]*model.Post, error) {
 	var posts []*model.Post
 	err := p.DB.Model(&posts).
 		Where("user_id <> ?", userId).
