@@ -3,6 +3,17 @@
 # https://gqlgen.com/getting-started/
 
 scalar Date
+scalar Time
+
+type AuthToken {
+  accessToken: String!
+  expiredAt: Time!
+}
+
+type AuthResponse {
+  authToken: AuthToken!
+  user: User!
+}
 
 type User {
   id: ID!
@@ -52,6 +63,6 @@ input NewPost {
 
 type Mutation {
   createUser(input: NewUser!): User!
-  authUser(input: AuthUser!): User!
+  authUser(input: AuthUser!): AuthResponse!
   createPost(input: NewPost!): Post!
 }

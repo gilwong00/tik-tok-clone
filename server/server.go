@@ -19,7 +19,7 @@ func main() {
 	DB := db.Init(&pg.Options{
 		User:     "postgres",
 		Password: "postgres",
-		Database: "tik_tok_pg",
+		Database: "tik_tok_clone",
 	})
 
 	defer DB.Close()
@@ -31,9 +31,12 @@ func main() {
 		port = defaultPort
 	}
 
-	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{}}))
+	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{
+		UserRepository: db.UsersRepository{DB: DB},
+		PostRepository: db.PostsRepository{DB: DB},
+	}}))
 
-	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
+	http.Handle("/graphql", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)
 
 	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)

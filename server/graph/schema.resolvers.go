@@ -12,23 +12,33 @@ import (
 
 // CreateUser is the resolver for the createUser field.
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (*model.User, error) {
-	err := r.UserRepository.CreateUser(input)
+	user, err := r.UserRepository.CreateUser(input)
 
 	if err != nil {
 		panic(err)
 	}
 
-	return nil, nil
+	return user, nil
 }
 
 // AuthUser is the resolver for the authUser field.
-func (r *mutationResolver) AuthUser(ctx context.Context, input model.AuthUser) (*model.User, error) {
-	panic(fmt.Errorf("not implemented"))
+func (r *mutationResolver) AuthUser(ctx context.Context, input model.AuthUser) (*model.AuthResponse, error) {
+	auth, err := r.UserRepository.AuthUser(input)
+
+	if err != nil {
+		panic(err)
+	}
+	return auth, nil
 }
 
 // CreatePost is the resolver for the createPost field.
 func (r *mutationResolver) CreatePost(ctx context.Context, input model.NewPost) (*model.Post, error) {
-	panic(fmt.Errorf("not implemented"))
+	post, err := r.PostRepository.CreatePost(input)
+
+	if err != nil {
+		panic(err)
+	}
+	return post, nil
 }
 
 // UserPosts is the resolver for the userPosts field.
@@ -43,7 +53,13 @@ func (r *queryResolver) Post(ctx context.Context, userID string) (*model.Post, e
 
 // User is the resolver for the user field.
 func (r *queryResolver) User(ctx context.Context, userID string) (*model.User, error) {
-	panic(fmt.Errorf("not implemented"))
+	user, err := r.UserRepository.GetUser(userID)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return user, nil
 }
 
 // GetFeed is the resolver for the getFeed field.
