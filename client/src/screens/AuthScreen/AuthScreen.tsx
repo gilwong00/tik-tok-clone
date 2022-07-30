@@ -1,16 +1,33 @@
 import React, { useCallback, useState } from 'react';
-import { Text, View, TouchableOpacity, TextInput } from 'react-native';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
+  ActivityIndicator
+} from 'react-native';
 import { styles } from './styles';
 import { AuthBanner } from '../../components';
-import { AuthMode, ScreenNames } from '../../@types';
-import { useNavigation } from '@react-navigation/native';
+import { AuthMode, AuthResponse } from '../../@types';
 import { useUserStore } from '../../store';
+import { useAuthUser } from '../../hooks';
+import { ApolloError } from '@apollo/client';
+import { COLORS } from '../../constants';
 
 const AuthScreen = () => {
   const [mode, setMode] = useState<AuthMode>(AuthMode.LOGIN);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const { setUser } = useUserStore();
+  const { setAuthUser } = useUserStore();
+  const { authUser, loading, data } = useAuthUser({
+    onCompleted: (auth: AuthResponse) => {
+      setAuthUser(auth);
+    },
+    onError: (error: ApolloError) => {
+      console.log('error', error);
+      // throw some toast
+    }
+  });
 
   const handleBannerClick = useCallback(
     () =>
@@ -20,12 +37,16 @@ const AuthScreen = () => {
     []
   );
 
-  const handleSubmit = useCallback(() => {
-    // TODO: add call to api once backend is setup
+  const handleSubmit = useCallback(async () => {
     if (email.length && password.length) {
-      setUser({ email, password });
+      await authUser({
+        variables: {
+          email,
+          password
+        }
+      });
     }
-  }, [email, password, setUser]);
+  }, [email, password]);
 
   const authText: string = mode === AuthMode.LOGIN ? 'Log In' : 'Sign Up';
 
@@ -48,8 +69,16 @@ const AuthScreen = () => {
           secureTextEntry
           autoCapitalize='none'
         />
-        <TouchableOpacity style={styles.authBtn} onPress={handleSubmit}>
-          <Text style={styles.authBtnText}>{authText}</Text>
+        <TouchableOpacity
+          style={styles.authBtn}
+          onPress={handleSubmit}
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator size='small' color={COLORS.WHITE} />
+          ) : (
+            <Text style={styles.authBtnText}>{authText}</Text>
+          )}
         </TouchableOpacity>
       </View>
 

@@ -15,7 +15,7 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) 
 	user, err := r.UserRepository.CreateUser(input)
 
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	return user, nil
@@ -26,7 +26,7 @@ func (r *mutationResolver) AuthUser(ctx context.Context, input model.AuthUser) (
 	auth, err := r.UserRepository.AuthUser(input)
 
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	return auth, nil
 }
@@ -36,7 +36,7 @@ func (r *mutationResolver) CreatePost(ctx context.Context, input model.NewPost) 
 	post, err := r.PostRepository.CreatePost(input)
 
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 	return post, nil
 }
@@ -56,7 +56,7 @@ func (r *queryResolver) User(ctx context.Context, userID string) (*model.User, e
 	user, err := r.UserRepository.GetUser(userID)
 
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	return user, nil
@@ -67,7 +67,7 @@ func (r *queryResolver) GetFeed(ctx context.Context, userID string, page int, li
 	feed, err := r.PostRepository.GetFeed(userID, page, limit)
 
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
 
 	return feed, nil

@@ -35,13 +35,14 @@ type NewUser struct {
 }
 
 type Post struct {
-	ID          string `json:"id"`
-	UserID      int    `json:"userId"`
-	Description string `json:"description"`
-	URI         string `json:"uri"`
-	IsActive    bool   `json:"isActive"`
-	CreatedAt   string `json:"createdAt"`
-	UpdatedAt   string `json:"updatedAt"`
+	ID           string `json:"id"`
+	UserID       int    `json:"userId"`
+	Description  string `json:"description"`
+	URI          string `json:"uri"`
+	ThumbnailURI string `json:"thumbnailUri"`
+	IsActive     bool   `json:"isActive"`
+	CreatedAt    string `json:"createdAt"`
+	UpdatedAt    string `json:"updatedAt"`
 }
 
 type User struct {

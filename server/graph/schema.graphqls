@@ -31,6 +31,7 @@ type Post {
   userId: Int!
   description: String!
   uri: String!
+  thumbnailUri: String!
   isActive: Boolean!
   createdAt: Date!
   updatedAt: Date!

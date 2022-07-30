@@ -93,8 +93,9 @@ func (u *UsersRepository) GetUser(id string) (*model.User, error) {
 }
 
 func (u *UsersRepository) AuthUser(input model.AuthUser) (*model.AuthResponse, error) {
+	log.Println("payload", input)
 	var user model.User
-	err := u.DB.Model(user).Where("email = ?", input.Email).First()
+	err := u.DB.Model(&user).Where("email = ?", input.Email).First()
 
 	if err != nil {
 		return nil, err
