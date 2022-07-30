@@ -473,8 +473,9 @@ input AuthUser {
 
 input NewPost {
   userId: ID!
-  uri: String!
   description: String!
+  uri: String!
+  thumbnailUri: String!
 }
 
 type Mutation {
@@ -4011,7 +4012,7 @@ func (ec *executionContext) unmarshalInputNewPost(ctx context.Context, obj inter
 		asMap[k] = v
 	}
 
-	fieldsInOrder := [...]string{"userId", "uri", "description"}
+	fieldsInOrder := [...]string{"userId", "description", "uri", "thumbnailUri"}
 	for _, k := range fieldsInOrder {
 		v, ok := asMap[k]
 		if !ok {
@@ -4026,6 +4027,14 @@ func (ec *executionContext) unmarshalInputNewPost(ctx context.Context, obj inter
 			if err != nil {
 				return it, err
 			}
+		case "description":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
+			it.Description, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		case "uri":
 			var err error
 
@@ -4034,11 +4043,11 @@ func (ec *executionContext) unmarshalInputNewPost(ctx context.Context, obj inter
 			if err != nil {
 				return it, err
 			}
-		case "description":
+		case "thumbnailUri":
 			var err error
 
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("description"))
-			it.Description, err = ec.unmarshalNString2string(ctx, v)
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("thumbnailUri"))
+			it.ThumbnailURI, err = ec.unmarshalNString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}

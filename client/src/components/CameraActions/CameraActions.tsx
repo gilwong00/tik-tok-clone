@@ -1,6 +1,6 @@
 import { Asset } from 'expo-media-library';
 import React from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, TouchableOpacity, Image } from 'react-native';
 import { styles } from './styles';
 
 type Props = {

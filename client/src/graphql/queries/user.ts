@@ -1,5 +1,5 @@
 import { gql } from '@apollo/client';
-import { USER_PARTS } from '../fragments/user';
+import { USER_PARTS } from '../fragments';
 
 export const GET_USER = gql`
   query getUser($userId: String!) {

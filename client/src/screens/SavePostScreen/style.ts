@@ -7,9 +7,13 @@ export const styles = StyleSheet.create({
     paddingTop: 30,
     backgroundColor: COLORS.WHITE
   },
+  pageHeight: {
+    height: '100%'
+  },
   form: {
     padding: 20,
-    flexDirection: 'row'
+    flexDirection: 'row',
+    height: 200
   },
   descriptionInput: {
     flex: 1,

@@ -1,11 +1,17 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { Posts, ProfileHeader, ProfileSection } from '../../components';
+import { useUserPosts } from '../../hooks';
 import { useUserStore } from '../../store';
 import { styles } from './styles';
 
 const ProfileScreen = () => {
   const { user } = useUserStore();
+  const { data, loading, error, refetch } = useUserPosts({
+    userId: user?.id ?? ''
+  });
+
+  if (loading) return <Text>Loading....</Text>;
 
   return (
     <View style={styles.container}>
@@ -18,7 +24,11 @@ const ProfileScreen = () => {
       />
       <View style={styles.sectionContainer}>
         <ProfileSection />
-        <Posts posts={[]} />
+        <Posts
+          posts={data.userPosts}
+          handleRefresh={refetch}
+          loading={loading}
+        />
       </View>
     </View>
   );

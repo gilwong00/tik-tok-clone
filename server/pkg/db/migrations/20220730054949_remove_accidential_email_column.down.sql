@@ -1,0 +1,2 @@
+ALTER TABLE posts
+ADD COLUMN email VARCHAR(255);

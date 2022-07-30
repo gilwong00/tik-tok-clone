@@ -43,7 +43,12 @@ func (r *mutationResolver) CreatePost(ctx context.Context, input model.NewPost) 
 
 // UserPosts is the resolver for the userPosts field.
 func (r *queryResolver) UserPosts(ctx context.Context, userID string) ([]*model.Post, error) {
-	panic(fmt.Errorf("not implemented"))
+	posts, err := r.PostRepository.GetUsersPosts(userID)
+
+	if err != nil {
+		return nil, err
+	}
+	return posts, nil
 }
 
 // Post is the resolver for the post field.

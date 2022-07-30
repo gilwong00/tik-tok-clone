@@ -1,6 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { View } from 'react-native';
-import { Camera, CameraType, FlashMode, VideoQuality } from 'expo-camera';
+import {
+  Camera,
+  CameraType,
+  FlashMode,
+  VideoCodec,
+  VideoQuality
+} from 'expo-camera';
 import { Audio } from 'expo-av';
 import {
   ImagePickerResult,
@@ -91,6 +97,7 @@ const CameraScreen = () => {
         const data = await cameraRef.recordAsync({
           maxDuration: 60,
           quality: VideoQuality['480p']
+          // codec: VideoCodec.JPEG,
         });
         const thumbnail = await generateThumbnail(data.uri);
         return redirectToSavePostScreen(data.uri, thumbnail);

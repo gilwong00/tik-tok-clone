@@ -61,7 +61,11 @@ const AppNavigator = () => {
         tabBarIconStyle: styles.tabBarIconStyle
       })}
     >
-      <Tab.Screen name={ScreenNames.FEED} component={FeedScreen} />
+      <Tab.Screen
+        options={{ headerTitle: '' }}
+        name={ScreenNames.FEED}
+        component={FeedScreen}
+      />
       <Tab.Screen name={ScreenNames.DISCOVER} component={DiscoverScreen} />
       <Tab.Screen
         options={{ headerShown: false }}

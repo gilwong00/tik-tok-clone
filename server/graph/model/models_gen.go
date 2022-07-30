@@ -22,9 +22,10 @@ type AuthUser struct {
 }
 
 type NewPost struct {
-	UserID      string `json:"userId"`
-	URI         string `json:"uri"`
-	Description string `json:"description"`
+	UserID       string `json:"userId"`
+	Description  string `json:"description"`
+	URI          string `json:"uri"`
+	ThumbnailURI string `json:"thumbnailUri"`
 }
 
 type NewUser struct {

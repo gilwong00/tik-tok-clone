@@ -1,6 +1,7 @@
 package db
 
 import (
+	"log"
 	"server/graph/model"
 	"strconv"
 
@@ -11,9 +12,9 @@ type PostsRepository struct {
 	DB *pg.DB
 }
 
-func (p *PostsRepository) GetUsersPosts(userId int) ([]*model.Post, error) {
+func (p *PostsRepository) GetUsersPosts(userId string) ([]*model.Post, error) {
 	var posts []*model.Post
-	err := p.DB.Model(&posts).Where("user_id = ?", userId).Select()
+	err := p.DB.Model(&posts).Where("user_id = ?", userId).Order("created_at DESC").Select()
 
 	if err != nil {
 		return nil, err
@@ -36,12 +37,15 @@ func (p *PostsRepository) GetFeed(userId string, page int, limit int) ([]*model.
 }
 
 func (p *PostsRepository) CreatePost(payload model.NewPost) (*model.Post, error) {
+	log.Println("payload", payload)
+
 	userId, _ := strconv.Atoi(payload.UserID)
 
 	newPost := &model.Post{
-		Description: payload.Description,
-		URI:         payload.URI,
-		UserID:      userId,
+		UserID:       userId,
+		Description:  payload.Description,
+		URI:          payload.URI,
+		ThumbnailURI: payload.ThumbnailURI,
 	}
 
 	_, err := p.DB.Model(newPost).

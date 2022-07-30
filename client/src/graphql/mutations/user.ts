@@ -16,9 +16,10 @@ export const CREATE_USER = gql`
         password: $password
       }
     ) {
-      id
+      ...UserParts
     }
   }
+  ${USER_PARTS}
 `;
 
 export const AUTH_USER = gql`

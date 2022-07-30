@@ -19,9 +19,9 @@ const AuthScreen = () => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const { setAuthUser } = useUserStore();
-  const { authUser, loading, data } = useAuthUser({
-    onCompleted: (auth: AuthResponse) => {
-      setAuthUser(auth);
+  const { authUser, loading } = useAuthUser({
+    onCompleted: ({ authUser }: { authUser: AuthResponse }) => {
+      setAuthUser(authUser);
     },
     onError: (error: ApolloError) => {
       console.log('error', error);
@@ -72,7 +72,7 @@ const AuthScreen = () => {
         <TouchableOpacity
           style={styles.authBtn}
           onPress={handleSubmit}
-          disabled={loading}
+          disabled={loading || !email.length || !password.length}
         >
           {loading ? (
             <ActivityIndicator size='small' color={COLORS.WHITE} />
