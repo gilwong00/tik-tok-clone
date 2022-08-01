@@ -9,3 +9,7 @@ export enum ScreenNames {
   SAVE_POST = 'save_post',
   EDIT_PROFILE = 'edit_profile'
 }
+
+export enum STORAGE_KEYS {
+  TOKEN = 'token'
+}

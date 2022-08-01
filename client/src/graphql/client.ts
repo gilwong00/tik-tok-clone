@@ -2,6 +2,8 @@ import { ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { storage } from '../utils';
 import Constants from 'expo-constants';
+import { STORAGE_KEYS } from '../@types';
+import { useUserStore } from '../store';
 const { manifest } = Constants;
 
 // const httpLink = createHttpLink({
@@ -21,9 +23,10 @@ const authLink = setContext(async (_, { headers }) => {
   let token = '';
 
   try {
-    token = await storage.load<string>({ key: 'token' });
+    token = await storage.load<string>({ key: STORAGE_KEYS.TOKEN });
   } catch (err) {
     token = '';
+    useUserStore().setAuthUser(null);
   }
 
   return {

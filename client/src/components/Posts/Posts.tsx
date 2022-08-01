@@ -11,6 +11,7 @@ type Props = {
 
 const Posts: React.FC<Props> = ({ posts, loading, handleRefresh }) => {
   const renderItem = ({ item }: { item: Post }) => {
+    console.log('item', item);
     return (
       <View style={styles.postItem}>
         <Image style={styles.image} source={{ uri: item.thumbnailUri }} />

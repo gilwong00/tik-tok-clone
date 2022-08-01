@@ -11,19 +11,21 @@ const ProfileScreen = () => {
     userId: user?.id ?? ''
   });
 
+  const userName = `${user?.firstName} ${user?.lastName}`;
+
   if (loading) return <Text>Loading....</Text>;
 
   return (
     <View style={styles.container}>
       <ProfileHeader
-        title={'Joe Dow'}
+        title={userName}
         leftIcon='search'
         rightIcon='menu'
         handleLeftIconPress={() => {}}
         handleRightIconPress={() => {}}
       />
       <View style={styles.sectionContainer}>
-        <ProfileSection />
+        <ProfileSection name={userName} />
         <Posts
           posts={data.userPosts}
           handleRefresh={refetch}

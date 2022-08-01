@@ -66,7 +66,11 @@ const AppNavigator = () => {
         name={ScreenNames.FEED}
         component={FeedScreen}
       />
-      <Tab.Screen name={ScreenNames.DISCOVER} component={DiscoverScreen} />
+      <Tab.Screen
+        options={{ headerShown: false }}
+        name={ScreenNames.DISCOVER}
+        component={DiscoverScreen}
+      />
       <Tab.Screen
         options={{ headerShown: false }}
         name={ScreenNames.ADD}

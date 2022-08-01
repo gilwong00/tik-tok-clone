@@ -1,13 +1,35 @@
-import { View, Text } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
+import { View, Text, TextInput, FlatList, Image } from 'react-native';
+import { User } from '../../@types';
+import { SafeContainer } from '../../components';
+import { styles } from './styles';
 
-type Props = {};
+const DiscoverScreen: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState<string>('');
 
-const DiscoverScreen = (props: Props) => {
+  const renderItem = ({ item }: { item: User }) => {
+    return (
+      <View style={styles.searchItemContainer}>
+        <Text style={styles.text}>{item.email}</Text>
+        <Image style={styles.image} source={{ uri: item.avatarUri }} />
+      </View>
+    );
+  };
+
   return (
-    <View>
-      <Text>DiscoverScreen</Text>
-    </View>
+    <SafeContainer>
+      <TextInput
+        style={styles.searchInput}
+        onChangeText={setSearchTerm}
+        value={searchTerm}
+        placeholder='Search'
+      />
+      <FlatList
+        data={[]}
+        renderItem={renderItem}
+        keyExtractor={item => item.id}
+      />
+    </SafeContainer>
   );
 };
 

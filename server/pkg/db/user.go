@@ -118,3 +118,14 @@ func (u *UsersRepository) AuthUser(input model.AuthUser) (*model.AuthResponse, e
 
 	return nil, errors.New("password do not match")
 }
+
+func (u *UsersRepository) SearchUsers(term string) ([]*model.User, error) {
+	var users []*model.User
+	// need to implement full text search
+	err := u.DB.Model(&users).Select()
+
+	if err != nil {
+		return nil, err
+	}
+	return users, nil
+}

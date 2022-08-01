@@ -42,6 +42,7 @@ type Query {
   post(userId: ID!): Post
   user(userId: ID!): User!
   getFeed(userId: ID!, page: Int!, limit: Int!): [Post!]!
+  searchUser(term: String!): [User]!
 }
 
 input NewUser {

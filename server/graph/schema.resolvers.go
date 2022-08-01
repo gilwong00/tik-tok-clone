@@ -78,6 +78,11 @@ func (r *queryResolver) GetFeed(ctx context.Context, userID string, page int, li
 	return feed, nil
 }
 
+// SearchUser is the resolver for the searchUser field.
+func (r *queryResolver) SearchUser(ctx context.Context, term string) ([]*model.User, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
 // Mutation returns generated.MutationResolver implementation.
 func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResolver{r} }
 

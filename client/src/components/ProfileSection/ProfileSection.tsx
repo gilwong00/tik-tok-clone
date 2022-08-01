@@ -6,9 +6,11 @@ import { COLORS } from '../../constants';
 import { useNavigation } from '@react-navigation/native';
 import { ScreenNames } from '../../@types';
 
-type Props = {};
+type Props = {
+  name: string;
+};
 
-const ProfileSection: React.FC<Props> = () => {
+const ProfileSection: React.FC<Props> = ({ name }) => {
   const navigation = useNavigation();
 
   const handleEditPress = useCallback(() => {
@@ -18,7 +20,7 @@ const ProfileSection: React.FC<Props> = () => {
     <View style={styles.container}>
       <UserAvatar
         size={60}
-        name='John Doe'
+        name={name}
         bgColors={[...Object.values(COLORS)]}
         style={styles.avatar}
       />
