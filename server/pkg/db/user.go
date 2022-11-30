@@ -59,8 +59,6 @@ func generateToken(id string) (*model.AuthToken, error) {
 }
 
 func (u *UsersRepository) CreateUser(payload model.NewUser) (*model.User, error) {
-	log.Println("payload", payload)
-
 	newUser := &model.User{
 		FirstName: payload.FirstName,
 		LastName:  payload.LastName,
@@ -93,7 +91,6 @@ func (u *UsersRepository) GetUser(id string) (*model.User, error) {
 }
 
 func (u *UsersRepository) AuthUser(input model.AuthUser) (*model.AuthResponse, error) {
-	log.Println("payload", input)
 	var user model.User
 	err := u.DB.Model(&user).Where("email = ?", input.Email).First()
 
@@ -124,7 +121,7 @@ func (u *UsersRepository) SearchUsers(term string) ([]*model.User, error) {
 
 	err := u.DB.Model(&users).
 		Where("email LIKE ?", term).
-		WhereOr("firstName LIKE ?", term).
+		WhereOr("first_name LIKE ?", term).
 		Select()
 
 	if err != nil {

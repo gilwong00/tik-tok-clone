@@ -9,3 +9,10 @@ export const GET_USER = gql`
   }
   ${USER_PARTS}
 `;
+
+export const SEARCH_USERS = gql`
+  query searchUsers($term: string) {
+    ...UserParts
+  }
+  ${USER_PARTS}
+`;
