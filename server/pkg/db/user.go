@@ -17,7 +17,7 @@ type UsersRepository struct {
 }
 
 // maybe move this to a utils
-func HashPassword(password string) string {
+func hashPassword(password string) string {
 	bytePassword := []byte(password)
 	passwordHash, err := bcrypt.GenerateFromPassword(bytePassword, bcrypt.DefaultCost)
 
@@ -29,14 +29,14 @@ func HashPassword(password string) string {
 	return string(passwordHash)
 }
 
-func ComparePassword(userPassword string, password string) bool {
+func comparePassword(userPassword string, password string) bool {
 	bytePassword := []byte(password)
 	byteHashedPassword := []byte(userPassword)
 	err := bcrypt.CompareHashAndPassword(byteHashedPassword, bytePassword)
 	return err == nil
 }
 
-func GenerateToken(id string) (*model.AuthToken, error) {
+func generateToken(id string) (*model.AuthToken, error) {
 	expiredAt := time.Now().Add(time.Hour * 24) // one day token
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
@@ -65,7 +65,7 @@ func (u *UsersRepository) CreateUser(payload model.NewUser) (*model.User, error)
 		FirstName: payload.FirstName,
 		LastName:  payload.LastName,
 		Email:     payload.Email,
-		Password:  HashPassword(payload.Password),
+		Password:  hashPassword(payload.Password),
 		AvatarURI: "",
 	}
 
@@ -101,10 +101,10 @@ func (u *UsersRepository) AuthUser(input model.AuthUser) (*model.AuthResponse, e
 		return nil, err
 	}
 
-	doPasswordMatch := ComparePassword(user.Password, input.Password)
+	doPasswordMatch := comparePassword(user.Password, input.Password)
 
 	if doPasswordMatch {
-		auth, err := GenerateToken(user.ID)
+		auth, err := generateToken(user.ID)
 
 		if err != nil {
 			return nil, err
@@ -121,8 +121,11 @@ func (u *UsersRepository) AuthUser(input model.AuthUser) (*model.AuthResponse, e
 
 func (u *UsersRepository) SearchUsers(term string) ([]*model.User, error) {
 	var users []*model.User
-	// need to implement full text search
-	err := u.DB.Model(&users).Select()
+
+	err := u.DB.Model(&users).
+		Where("email LIKE ?", term).
+		WhereOr("firstName LIKE ?", term).
+		Select()
 
 	if err != nil {
 		return nil, err
