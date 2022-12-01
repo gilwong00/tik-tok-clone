@@ -10,4 +10,7 @@ migrate-create:
 migrate-up:
 	migrate -path "pkg/db/migrations" -database "postgres://postgres:postgres@localhost:5432/tik_tok_clone?sslmode=disable" up
 
+server:
+	go run server.go
+
 .PHONY: gqlgen sqlc migrate-create migrate-up

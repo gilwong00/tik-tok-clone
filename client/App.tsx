@@ -14,42 +14,47 @@ export default function App() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const { user, setUser } = useUserStore();
 
-  // useEffect(() => {
-  //   const initApp = async () => {
-  //     const token = await storage.load<string>({ key: STORAGE_KEYS.TOKEN });
-  //     // fetch active user
-  //     if (token.length && !user) {
-  //       const { data } = await client.query<User>({
-  //         query: GET_USER,
-  //         variables: {
-  //           token
-  //         }
-  //       });
+  useEffect(() => {
+    const initApp = async () => {
+      try {
+        const token = await storage.load<string>({ key: STORAGE_KEYS.TOKEN });
+        // fetch active user
+        if (token.length && !user) {
+          const { data } = await client.query<User>({
+            query: GET_USER,
+            variables: {
+              token
+            }
+          });
 
-  //       if (data) {
-  //         setUser(data);
-  //         setIsLoading(false);
-  //       }
-  //     }
-  //   };
+          if (data) {
+            setUser(data);
+            setIsLoading(false);
+          }
+        }
+      } catch (err) {
+        setUser(null);
+        setIsLoading(false);
+      }
+    };
 
-  //   initApp();
-  // }, [user]);
+    initApp();
+  }, [user]);
 
-  // if (isLoading) {
-  //   return (
-  //     <View
-  //       style={{
-  //         position: 'absolute',
-  //         top: '50%',
-  //         left: 0,
-  //         right: 0
-  //       }}
-  //     >
-  //       <ActivityIndicator size='large' color={COLORS.CORAL_RED} />
-  //     </View>
-  //   );
-  // }
+  if (isLoading) {
+    return (
+      <View
+        style={{
+          position: 'absolute',
+          top: '50%',
+          left: 0,
+          right: 0
+        }}
+      >
+        <ActivityIndicator size='large' color={COLORS.CORAL_RED} />
+      </View>
+    );
+  }
 
   return (
     <ApolloProvider client={client}>
