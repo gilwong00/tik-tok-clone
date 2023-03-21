@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"server/api"
+	db "server/pkg/db/sqlc"
 
 	"github.com/joho/godotenv"
 
@@ -28,7 +29,8 @@ func main() {
 	if port == "" {
 		port = defaultPort
 	}
-	server, err := api.NewServer(port, conn)
+	queries := db.New(conn)
+	server, err := api.NewServer(port, queries)
 	if err != nil {
 		log.Fatal("failed to connect to start server", err)
 	}

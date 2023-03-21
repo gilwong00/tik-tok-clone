@@ -1,21 +1,21 @@
 package api
 
 import (
-	"database/sql"
 	"fmt"
 	"net/http"
+	db "server/pkg/db/sqlc"
 	"server/pkg/middleware"
 
 	"github.com/gin-gonic/gin"
 )
 
 type Server struct {
-	db     *sql.DB
+	db     *db.Queries
 	port   string
 	router *gin.Engine
 }
 
-func NewServer(port string, db *sql.DB) (*Server, error) {
+func NewServer(port string, db *db.Queries) (*Server, error) {
 	server := &Server{
 		port: port,
 		db:   db,
