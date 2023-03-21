@@ -1,6 +1,3 @@
-gqlgen:
-	go run github.com/99designs/gqlgen generate
-
 sqlc:
 	sqlc generate
 
@@ -11,6 +8,6 @@ migrate-up:
 	migrate -path "pkg/db/migrations" -database "postgres://postgres:postgres@localhost:5432/tik_tok_clone?sslmode=disable" up
 
 server:
-	go run server.go
+	go run main.go
 
-.PHONY: gqlgen sqlc migrate-create migrate-up
+.PHONY: server sqlc migrate-create migrate-up

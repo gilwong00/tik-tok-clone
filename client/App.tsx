@@ -5,7 +5,7 @@ import { AuthNavigator, HomeNavigator } from './src/navigators';
 import { useUserStore } from './src/store';
 import { ApolloProvider } from '@apollo/client';
 import { client, GET_USER } from './src/graphql';
-import { ActivityIndicator, Text, View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import { COLORS } from './src/constants';
 import { storage } from './src/utils';
 import { STORAGE_KEYS, User } from './src/@types';
