@@ -4,12 +4,15 @@ import { storage } from '../utils';
 
 interface UserStore {
   user: User | null;
+  authToken: string;
   setAuthUser: (auth: AuthResponse | null) => void;
   setUser: (user: User | null) => void;
+  setAuthToken: (token: string) => void;
 }
 
 export const useUserStore = create<UserStore>((set, get) => ({
   user: null,
+  authToken: '',
   setAuthUser: async (auth: AuthResponse | null) => {
     if (auth) {
       await storage.save({
@@ -21,5 +24,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
 
     set(state => ({ ...state, user: auth?.user }));
   },
-  setUser: (user: User | null) => set(state => ({ ...state, user }))
+  setUser: (user: User | null) => set(state => ({ ...state, user })),
+  setAuthToken: (token: string) =>
+    set(state => ({ ...state, authToken: token }))
 }));

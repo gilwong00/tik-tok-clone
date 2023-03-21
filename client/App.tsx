@@ -14,26 +14,27 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 export default function App() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [queryClient] = useState(new QueryClient());
-  const { user, setUser } = useUserStore();
+  const { user, setUser, setAuthToken } = useUserStore();
 
   useEffect(() => {
     const initApp = async () => {
       try {
         const token = await storage.load<string>({ key: STORAGE_KEYS.TOKEN });
+        setAuthToken(token);
         // fetch active user
-        if (token.length && !user) {
-          const { data } = await client.query<User>({
-            query: GET_USER,
-            variables: {
-              token
-            }
-          });
+        // if (token.length && !user) {
+        //   const { data } = await client.query<User>({
+        //     query: GET_USER,
+        //     variables: {
+        //       token
+        //     }
+        //   });
 
-          if (data) {
-            setUser(data);
-            setIsLoading(false);
-          }
-        }
+        //   if (data) {
+        //     setUser(data);
+        //     setIsLoading(false);
+        //   }
+        // }
       } catch (err) {
         setUser(null);
         setIsLoading(false);
