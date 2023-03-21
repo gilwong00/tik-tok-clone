@@ -9,9 +9,11 @@ import { ActivityIndicator, View } from 'react-native';
 import { COLORS } from './src/constants';
 import { storage } from './src/utils';
 import { STORAGE_KEYS, User } from './src/@types';
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [queryClient] = useState(new QueryClient());
   const { user, setUser } = useUserStore();
 
   useEffect(() => {
@@ -57,10 +59,12 @@ export default function App() {
   }
 
   return (
-    <ApolloProvider client={client}>
-      <NavigationContainer>
-        {user ? <HomeNavigator /> : <AuthNavigator />}
-      </NavigationContainer>
-    </ApolloProvider>
+    <QueryClientProvider client={queryClient}>
+      <ApolloProvider client={client}>
+        <NavigationContainer>
+          {user ? <HomeNavigator /> : <AuthNavigator />}
+        </NavigationContainer>
+      </ApolloProvider>
+    </QueryClientProvider>
   );
 }
