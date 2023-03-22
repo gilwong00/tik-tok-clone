@@ -2,7 +2,6 @@ package api
 
 import (
 	"fmt"
-	"net/http"
 	db "server/pkg/db/sqlc"
 	"server/pkg/middleware"
 
@@ -10,15 +9,15 @@ import (
 )
 
 type Server struct {
-	db     *db.Queries
-	port   string
-	router *gin.Engine
+	queries *db.Queries
+	port    string
+	router  *gin.Engine
 }
 
-func NewServer(port string, db *db.Queries) (*Server, error) {
+func NewServer(port string, queries *db.Queries) (*Server, error) {
 	server := &Server{
-		port: port,
-		db:   db,
+		port:    port,
+		queries: queries,
 	}
 	server.initRoutes()
 	return server, nil
@@ -29,11 +28,10 @@ func (server *Server) initRoutes() {
 	router.Use(gin.LoggerWithFormatter(middleware.GinLogger))
 	api := router.Group("/api")
 
-	api.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong",
-		})
-	})
+	//user routes
+	api.POST("/user/create", server.CreateUser)
+	api.POST("/user/auth", server.AuthUser)
+	api.GET("/user/whoami", server.WhoAmI)
 
 	server.router = router
 }

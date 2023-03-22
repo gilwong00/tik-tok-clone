@@ -4,7 +4,7 @@ import {
   Camera,
   CameraType,
   FlashMode,
-  VideoCodec,
+  // VideoCodec,
   VideoQuality
 } from 'expo-camera';
 import { Audio } from 'expo-av';

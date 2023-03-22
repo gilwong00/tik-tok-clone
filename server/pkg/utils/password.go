@@ -10,8 +10,8 @@ import (
 )
 
 type AuthToken struct {
-	AccessToken string
-	ExpiredAt   time.Time
+	AccessToken string    `json:"accessToken"`
+	ExpiredAt   time.Time `json:"expiredAt"`
 }
 
 func HashPassword(password string) string {
@@ -33,7 +33,6 @@ func ComparePassword(userPassword string, password string) bool {
 
 func GenerateToken(id string) (*AuthToken, error) {
 	expiredAt := time.Now().Add(time.Hour * 24) // one day token
-
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
 		ExpiresAt: expiredAt.Unix(),
 		Id:        id,

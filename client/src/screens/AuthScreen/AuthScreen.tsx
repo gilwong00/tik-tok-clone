@@ -10,24 +10,39 @@ import { styles } from './styles';
 import { AuthBanner } from '../../components';
 import { AuthMode, AuthResponse } from '../../@types';
 import { useUserStore } from '../../store';
-import { useAuthUser } from '../../hooks';
-import { ApolloError } from '@apollo/client';
 import { COLORS } from '../../constants';
+import { useMutation } from 'react-query';
+import { authUser, createUser } from '../../api';
 
 const AuthScreen = () => {
   const [mode, setMode] = useState<AuthMode>(AuthMode.LOGIN);
+  const [firstName, setFirstName] = useState<string>('');
+  const [lastName, setLastName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const { setAuthUser } = useUserStore();
-  const { authUser, loading } = useAuthUser({
-    onCompleted: ({ authUser }: { authUser: AuthResponse }) => {
-      setAuthUser(authUser);
-    },
-    onError: (error: ApolloError) => {
-      console.log('error', error);
-      // throw some toast
+  const createUserMutation = useMutation(
+    (payload: any) => createUser(payload),
+    {
+      onSuccess() {
+        setMode(AuthMode.LOGIN);
+        resetState();
+      }
+    }
+  );
+  const authUserMutation = useMutation((payload: any) => authUser(payload), {
+    onSuccess(data: AuthResponse) {
+      resetState();
+      setAuthUser(data);
     }
   });
+
+  const resetState = () => {
+    setFirstName('');
+    setLastName('');
+    setEmail('');
+    setPassword('');
+  };
 
   const handleBannerClick = useCallback(
     () =>
@@ -38,14 +53,23 @@ const AuthScreen = () => {
   );
 
   const handleSubmit = useCallback(async () => {
-    if (email.length && password.length) {
-      await authUser({
-        variables: {
+    const isSignUp = mode === AuthMode.SIGNUP;
+    const payload = isSignUp
+      ? {
+          firstName,
+          lastName,
           email,
           password
         }
-      });
+      : {
+          email,
+          password
+        };
+    // TODO add payload validation
+    if (isSignUp) {
+      return await createUserMutation.mutateAsync(payload);
     }
+    return await authUserMutation.mutateAsync(payload);
   }, [email, password]);
 
   const authText: string = mode === AuthMode.LOGIN ? 'Log In' : 'Sign Up';
@@ -54,6 +78,24 @@ const AuthScreen = () => {
     <View style={styles.container}>
       <Text style={styles.headerText}>{authText}</Text>
       <View style={styles.formContainer}>
+        {mode === AuthMode.SIGNUP && (
+          <>
+            <TextInput
+              onChangeText={text => setFirstName(text)}
+              style={styles.textInput}
+              placeholder='First Name'
+              value={firstName}
+              autoCapitalize='none'
+            />
+            <TextInput
+              onChangeText={text => setLastName(text)}
+              style={styles.textInput}
+              placeholder='Last Name'
+              value={lastName}
+              autoCapitalize='none'
+            />
+          </>
+        )}
         <TextInput
           onChangeText={text => setEmail(text)}
           style={styles.textInput}
@@ -72,9 +114,14 @@ const AuthScreen = () => {
         <TouchableOpacity
           style={styles.authBtn}
           onPress={handleSubmit}
-          disabled={loading || !email.length || !password.length}
+          disabled={
+            authUserMutation.isLoading ||
+            createUserMutation.isLoading ||
+            !email.length ||
+            !password.length
+          }
         >
-          {loading ? (
+          {authUserMutation.isLoading || createUserMutation.isLoading ? (
             <ActivityIndicator size='small' color={COLORS.WHITE} />
           ) : (
             <Text style={styles.authBtnText}>{authText}</Text>

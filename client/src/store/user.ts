@@ -21,7 +21,6 @@ export const useUserStore = create<UserStore>((set, get) => ({
         expires: new Date(auth.authToken.expiredAt).getTime()
       });
     }
-
     set(state => ({ ...state, user: auth?.user }));
   },
   setUser: (user: User | null) => set(state => ({ ...state, user })),

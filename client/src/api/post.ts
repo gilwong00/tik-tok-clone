@@ -1,6 +1,7 @@
 import axios from 'axios';
-import { Post } from '../../@types';
-import { authTokenInterceptor, promiseHandler } from '../../utils';
+import { Post } from '../@types';
+import { promiseHandler } from '../utils';
+import { authTokenInterceptor } from './auth';
 
 const postClient = axios.create({
   baseURL: 'localhost:5000/api/post'
