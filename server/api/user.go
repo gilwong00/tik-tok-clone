@@ -2,9 +2,11 @@ package api
 
 import (
 	"database/sql"
+	"errors"
 	"net/http"
 	"os"
 	db "server/pkg/db/sqlc"
+	"server/pkg/models"
 	"server/pkg/utils"
 	"strconv"
 	"strings"
@@ -13,32 +15,8 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-type authUserRequest struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}
-
-type authUserResponse struct {
-	User      db.User          `json:"user"`
-	AuthToken *utils.AuthToken `json:"authToken"`
-}
-
-type createUserRequest struct {
-	FirstName string `json:"firstName"`
-	LastName  string `json:"lastName"`
-	Email     string `json:"email"`
-	Password  string `json:"password"`
-}
-
-type createUserResponse struct {
-	FirstName string `json:"firstName"`
-	LastName  string `json:"lastName"`
-	Email     string `json:"email"`
-	AvatarUri string `json:"avatarUri"`
-}
-
 func (s *Server) AuthUser(ctx *gin.Context) {
-	var req authUserRequest
+	var req models.AuthUserRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, err)
 		return
@@ -59,16 +37,17 @@ func (s *Server) AuthUser(ctx *gin.Context) {
 			ctx.JSON(http.StatusNonAuthoritativeInfo, err)
 			return
 		}
-		ctx.JSON(http.StatusOK, &authUserResponse{
+		ctx.JSON(http.StatusOK, models.AuthUserResponse{
 			User:      user,
 			AuthToken: auth,
 		})
 		return
 	}
+	ctx.JSON(http.StatusUnauthorized, errors.New("invalid password"))
 }
 
 func (s *Server) CreateUser(ctx *gin.Context) {
-	var req createUserRequest
+	var req models.CreateUserRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, err)
 		return
@@ -84,7 +63,7 @@ func (s *Server) CreateUser(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, err)
 		return
 	}
-	ctx.JSON(http.StatusOK, createUserResponse{
+	ctx.JSON(http.StatusOK, models.CreateUserResponse{
 		FirstName: newUser.FirstName,
 		LastName:  newUser.LastName,
 		Email:     newUser.Email,
@@ -92,7 +71,7 @@ func (s *Server) CreateUser(ctx *gin.Context) {
 	})
 }
 
-func (s *Server) WhoAmI(ctx *gin.Context) {
+func (s *Server) Whoami(ctx *gin.Context) {
 	token := strings.Split(ctx.Request.Header["Authorization"][0], " ")[1]
 	claims := jwt.MapClaims{}
 	keyFunc := func(token *jwt.Token) (interface{}, error) {
