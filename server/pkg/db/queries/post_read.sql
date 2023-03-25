@@ -8,4 +8,4 @@ SELECT * FROM posts
 WHERE user_id <> $1
 AND id > $2
 ORDER BY "id" ASC
-LIMIT $3
+LIMIT $3;
