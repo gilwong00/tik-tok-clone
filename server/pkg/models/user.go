@@ -6,8 +6,8 @@ import (
 )
 
 type AuthUserRequest struct {
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required"`
 }
 
 type AuthUserResponse struct {
@@ -16,10 +16,10 @@ type AuthUserResponse struct {
 }
 
 type CreateUserRequest struct {
-	FirstName string `json:"firstName"`
-	LastName  string `json:"lastName"`
-	Email     string `json:"email"`
-	Password  string `json:"password"`
+	FirstName string `json:"firstName" binding:"required"`
+	LastName  string `json:"lastName"  binding:"required"`
+	Email     string `json:"email"  binding:"required,email"`
+	Password  string `json:"password" binding:"required"`
 }
 
 type CreateUserResponse struct {
