@@ -18,3 +18,11 @@ export const createPost = async (payload: any) => {
   }
   return post as Post;
 };
+
+export const getUserPosts = async (userId: number) => {
+  const [posts, error] = await promiseHandler<Array<Post>, Error>(
+    postClient.get(`/${userId}`)
+  );
+  if (error) throw error;
+  return posts;
+};

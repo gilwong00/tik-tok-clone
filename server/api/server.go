@@ -31,7 +31,11 @@ func (server *Server) initRoutes() {
 	//user routes
 	api.POST("/user/create", server.CreateUser)
 	api.POST("/user/auth", server.AuthUser)
-	api.GET("/user/whoami", server.Whoami).Use(middleware.AuthMiddleware)
+	api.Use(middleware.AuthMiddleware).GET("/user/whoami", server.Whoami)
+
+	//post routes
+	api.Use(middleware.AuthMiddleware).GET("/feed", server.GetFeed)
+	api.Use(middleware.AuthMiddleware).POST("/feed/create", server.CreatePost)
 
 	server.router = router
 }

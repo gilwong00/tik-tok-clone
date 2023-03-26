@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 // import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { AuthNavigator, HomeNavigator } from './src/navigators';
@@ -17,23 +17,26 @@ export default function App() {
   const [queryClient] = useState(new QueryClient());
   const { user, setUser, setAuthToken } = useUserStore();
 
+  const resetState = useCallback(() => {
+    setUser(null);
+    setIsLoading(false);
+  }, []);
+
   useEffect(() => {
     const initApp = async () => {
-      try {
-        const token = await storage.load<string>({ key: STORAGE_KEYS.TOKEN });
+      const [token, tokenErr] = await promiseHandler<string, Error>(
+        storage.load<string>({ key: STORAGE_KEYS.TOKEN })
+      );
+      if (tokenErr !== null) return resetState();
+      // fetch active user
+      if (token?.length && !user) {
         setAuthToken(token);
-        // fetch active user
-        if (token.length && !user) {
-          const [authUser, err] = await promiseHandler<User, Error>(whoami());
-          if (err !== null) throw err;
-          if (authUser) {
-            setUser(authUser);
-            setIsLoading(false);
-          }
+        const [authUser, err] = await promiseHandler<User, Error>(whoami());
+        if (err !== null) return resetState();
+        if (authUser) {
+          setUser(authUser);
+          setIsLoading(false);
         }
-      } catch (err) {
-        setUser(null);
-        setIsLoading(false);
       }
     };
 

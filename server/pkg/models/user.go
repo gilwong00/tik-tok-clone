@@ -22,7 +22,7 @@ type CreateUserRequest struct {
 	Password  string `json:"password" binding:"required"`
 }
 
-type CreateUserResponse struct {
+type UserResponse struct {
 	FirstName string `json:"firstName"`
 	LastName  string `json:"lastName"`
 	Email     string `json:"email"`

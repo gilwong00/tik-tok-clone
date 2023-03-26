@@ -12,7 +12,6 @@ import { SafeContainer } from '../../components';
 import { Ionicons } from '@expo/vector-icons';
 import { styles } from './style';
 import { useCreatePost } from '../../hooks';
-import { ApolloError } from '@apollo/client';
 import { useUserStore } from '../../store';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
@@ -27,12 +26,15 @@ const SavePostScreen: React.FC<Props> = ({ route }) => {
   const { user } = useUserStore();
   const [description, setDescription] = useState<string>('');
   const { goBack } = useNavigation();
-  const { createPost } = useCreatePost({
-    onCompleted: () => {
-      handleGoBack();
-    },
-    onError: (err: ApolloError) => {
-      console.log('[CreatePost] err', JSON.stringify(err));
+
+  const { mutateAsync: createPost } = useCreatePost({
+    config: {
+      onSuccess: () => {
+        handleGoBack();
+      },
+      onError: err => {
+        console.log('[CreatePost] err', JSON.stringify(err));
+      }
     }
   });
 

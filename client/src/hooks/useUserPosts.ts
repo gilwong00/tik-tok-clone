@@ -1,24 +1,16 @@
-import { QueryHookOptions, useQuery } from '@apollo/client';
-import { GET_USER_POSTS } from '../graphql';
+import { useQuery } from 'react-query';
+import { QueryConfig } from '../@types';
+import { getUserPosts } from '../api';
 
-interface Params {
-  userId: string;
-  config?: QueryHookOptions;
+interface UseUserPostsParams {
+  userId: number | null;
+  config?: QueryConfig<typeof getUserPosts>;
 }
 
-export const useUserPosts = ({ userId, config }: Params) => {
-  const { loading, error, data, refetch } = useQuery(GET_USER_POSTS, {
-    variables: {
-      userId
-    },
-    ...config,
-    skip: !userId.length
+export const useUserPosts = ({ userId, config }: UseUserPostsParams) => {
+  return useQuery({
+    queryFn: () => getUserPosts(userId ?? 0),
+    enabled: userId !== null,
+    ...config
   });
-
-  return {
-    loading,
-    error,
-    data,
-    refetch
-  };
 };

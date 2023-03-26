@@ -60,7 +60,7 @@ func (s *Server) CreateUser(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, err)
 		return
 	}
-	ctx.JSON(http.StatusOK, models.CreateUserResponse{
+	ctx.JSON(http.StatusOK, models.UserResponse{
 		FirstName: newUser.FirstName,
 		LastName:  newUser.LastName,
 		Email:     newUser.Email,
@@ -69,15 +69,23 @@ func (s *Server) CreateUser(ctx *gin.Context) {
 }
 
 func (s *Server) Whoami(ctx *gin.Context) {
-	id := ctx.MustGet("user_id").(int64)
-	user, err := s.queries.GetUserByID(ctx, id)
-	if err != nil {
-		if err == sql.ErrNoRows {
-			ctx.JSON(http.StatusNotFound, err)
+	id, exists := ctx.Get("user_id")
+	if exists {
+		user, err := s.queries.GetUserByID(ctx, id.(int64))
+		if err != nil {
+			if err == sql.ErrNoRows {
+				ctx.JSON(http.StatusNotFound, err)
+				return
+			}
+			ctx.JSON(http.StatusInternalServerError, err)
 			return
 		}
-		ctx.JSON(http.StatusInternalServerError, err)
-		return
+		ctx.JSON(http.StatusOK, models.UserResponse{
+			FirstName: user.FirstName,
+			LastName:  user.LastName,
+			Email:     user.Email,
+			AvatarUri: user.AvatarUri.String,
+		})
 	}
-	ctx.JSON(http.StatusOK, user)
+	ctx.JSON(http.StatusBadRequest, errors.New("no user"))
 }

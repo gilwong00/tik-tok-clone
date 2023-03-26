@@ -7,13 +7,13 @@ import { styles } from './styles';
 
 const ProfileScreen = () => {
   const { user } = useUserStore();
-  const { data, loading, error, refetch } = useUserPosts({
-    userId: user?.id ?? ''
+  const { data, isLoading, refetch } = useUserPosts({
+    userId: user?.id ?? null
   });
 
   const userName = `${user?.firstName} ${user?.lastName}`;
 
-  if (loading) return <Text>Loading....</Text>;
+  if (isLoading) return <Text>Loading....</Text>;
 
   return (
     <View style={styles.container}>
@@ -26,11 +26,9 @@ const ProfileScreen = () => {
       />
       <View style={styles.sectionContainer}>
         <ProfileSection name={userName} />
-        <Posts
-          posts={data.userPosts}
-          handleRefresh={refetch}
-          loading={loading}
-        />
+        {Array.isArray(data) && (
+          <Posts posts={data} handleRefresh={refetch} loading={isLoading} />
+        )}
       </View>
     </View>
   );

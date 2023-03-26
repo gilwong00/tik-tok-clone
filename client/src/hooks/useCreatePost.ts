@@ -1,15 +1,13 @@
-import { MutationHookOptions, useMutation } from '@apollo/client';
-import { CREATE_POST } from '../graphql';
+import { useMutation } from 'react-query';
+import { QueryConfig } from '../@types';
+import { createPost } from '../api';
 
-export const useCreatePost = (config?: MutationHookOptions) => {
-  const [createPost, { data, loading, error }] = useMutation(CREATE_POST, {
+interface UseCreatePostParams {
+  config?: QueryConfig<typeof createPost>;
+}
+export const useCreatePost = ({ config }: UseCreatePostParams) => {
+  return useMutation({
+    mutationFn: (payload: any) => createPost(payload),
     ...config
   });
-
-  return {
-    createPost,
-    data,
-    loading,
-    error
-  };
 };
