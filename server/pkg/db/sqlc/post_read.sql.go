@@ -20,7 +20,7 @@ LIMIT $3
 type GetFeedParams struct {
 	UserID int64 `json:"userID"`
 	ID     int64 `json:"id"`
-	Limit  int32 `json:"limit"`
+	Limit  int32 `json:"limit" binding:"max=50"`
 }
 
 func (q *Queries) GetFeed(ctx context.Context, arg GetFeedParams) ([]Post, error) {

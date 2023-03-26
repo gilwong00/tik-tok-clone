@@ -1,6 +1,9 @@
 package models
 
-import "time"
+import (
+	db "server/pkg/db/sqlc"
+	"time"
+)
 
 type CreatePostRequest struct {
 	UserID       int64  `json:"userId" binding:"required"`
@@ -17,4 +20,14 @@ type CreatePostResponse struct {
 	ThumbnailUri string    `json:"thumbnailUri"`
 	IsActive     bool      `json:"isActive"`
 	CreatedAt    time.Time `json:"createdAt"`
+}
+
+type GetFeedParams struct {
+	Limit  int32 `json:"limit"`
+	Cursor int64 `json:"cursor"`
+}
+
+type GetFeedResponse struct {
+	Feed   []db.Post `json:"feed"`
+	Cursor int64     `json:"cursor,omitempty"`
 }

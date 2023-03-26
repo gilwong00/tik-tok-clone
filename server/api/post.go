@@ -37,18 +37,34 @@ func (s *Server) CreatePost(ctx *gin.Context) {
 }
 
 func (s *Server) GetFeed(ctx *gin.Context) {
-	var req any
+	var req models.GetFeedParams
 	if err := ctx.ShouldBindUri(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, err)
 		return
 	}
-	id := ctx.MustGet("user_id").(int64)
-	feed, err := s.queries.GetFeed(ctx, db.GetFeedParams{
-		UserID: id,
+	userId := ctx.MustGet("user_id").(int64)
+	feeds, err := s.queries.GetFeed(ctx, db.GetFeedParams{
+		UserID: userId,
+		ID:     req.Cursor,
+		Limit:  50,
 	})
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err)
 		return
 	}
-	ctx.JSON(http.StatusOK, feed)
+	f, c := paginateFeed(feeds, req.Limit)
+	ctx.JSON(http.StatusOK, models.GetFeedResponse{
+		Feed:   f,
+		Cursor: c,
+	})
+}
+
+func paginateFeed(feed []db.Post, limit int32) ([]db.Post, int64) {
+	if len(feed) == 0 || limit == 0 {
+		return feed, 0
+	}
+	if len(feed) > int(limit) {
+		return feed[:limit], feed[limit-1].ID
+	}
+	return feed, 0
 }
