@@ -49,3 +49,15 @@ export const whoami = async () => {
   }
   return user?.data as User;
 };
+
+export const searchUsers = async (query: string) => {
+  const [users, error] = await promiseHandler<
+    AxiosResponse<Array<User>>,
+    Error
+  >(userClient.get(`/search?query=${query}`));
+
+  if (error !== null) {
+    throw error;
+  }
+  return users?.data ?? [];
+};

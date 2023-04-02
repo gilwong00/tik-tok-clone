@@ -2,10 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, FlatList, Image } from 'react-native';
 import { User } from '../../@types';
 import { SafeContainer } from '../../components';
+import { useSearchUsers } from '../../hooks';
 import { styles } from './styles';
 
 const DiscoverScreen: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const { data, isLoading } = useSearchUsers({
+    query: searchTerm
+  });
 
   const renderItem = ({ item }: { item: User }) => {
     return (
@@ -15,13 +19,7 @@ const DiscoverScreen: React.FC = () => {
       </View>
     );
   };
-
-  // useEffect(() => {
-  //   let timer: NodeJS.Timeout;
-  //   if (searchTerm.length > 2) timer = setTimeout(() => searchUser(), 500);
-  //   return () => clearTimeout(timer);
-  // }, []);
-
+  console.log({ data, isLoading });
   return (
     <SafeContainer>
       <TextInput
