@@ -16,7 +16,7 @@ type Querier interface {
 	GetUserByID(ctx context.Context, id int64) (User, error)
 	GetUserPosts(ctx context.Context, userID int64) ([]Post, error)
 	// TODO improve this query
-	SearchUsers(ctx context.Context, email string) ([]User, error)
+	SearchUsers(ctx context.Context, arg SearchUsersParams) ([]SearchUsersRow, error)
 }
 
 var _ Querier = (*Queries)(nil)

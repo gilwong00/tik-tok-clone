@@ -8,5 +8,9 @@ WHERE email = $1;
 
 -- TODO improve this query
 -- name: SearchUsers :many
-SELECT * FROM users
-WHERE email LIKE $1 OR first_name LIKE $1;
+WITH unique_users AS (
+	SELECT * FROM users
+	WHERE id <> $1
+)
+SELECT * FROM unique_users
+WHERE email LIKE $2 OR first_name LIKE $2;

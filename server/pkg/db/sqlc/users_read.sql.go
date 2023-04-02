@@ -7,6 +7,8 @@ package db
 
 import (
 	"context"
+	"database/sql"
+	"time"
 )
 
 const getUserByEmail = `-- name: GetUserByEmail :one
@@ -52,20 +54,40 @@ func (q *Queries) GetUserByID(ctx context.Context, id int64) (User, error) {
 }
 
 const searchUsers = `-- name: SearchUsers :many
-SELECT id, first_name, last_name, email, password, avatar_uri, created_at, updated_at FROM users
-WHERE email LIKE $1 OR first_name LIKE $1
+WITH unique_users AS (
+	SELECT id, first_name, last_name, email, password, avatar_uri, created_at, updated_at FROM users
+	WHERE id <> $1
+)
+SELECT id, first_name, last_name, email, password, avatar_uri, created_at, updated_at FROM unique_users
+WHERE email LIKE $2 OR first_name LIKE $2
 `
 
+type SearchUsersParams struct {
+	ID    int64  `json:"id"`
+	Email string `json:"email"`
+}
+
+type SearchUsersRow struct {
+	ID        int64          `json:"id"`
+	FirstName string         `json:"firstName"`
+	LastName  string         `json:"lastName"`
+	Email     string         `json:"email"`
+	Password  string         `json:"password"`
+	AvatarUri sql.NullString `json:"avatarUri"`
+	CreatedAt time.Time      `json:"createdAt"`
+	UpdatedAt time.Time      `json:"updatedAt"`
+}
+
 // TODO improve this query
-func (q *Queries) SearchUsers(ctx context.Context, email string) ([]User, error) {
-	rows, err := q.db.QueryContext(ctx, searchUsers, email)
+func (q *Queries) SearchUsers(ctx context.Context, arg SearchUsersParams) ([]SearchUsersRow, error) {
+	rows, err := q.db.QueryContext(ctx, searchUsers, arg.ID, arg.Email)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	items := []User{}
+	items := []SearchUsersRow{}
 	for rows.Next() {
-		var i User
+		var i SearchUsersRow
 		if err := rows.Scan(
 			&i.ID,
 			&i.FirstName,
