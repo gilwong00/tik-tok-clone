@@ -26,3 +26,13 @@ export const getUserPosts = async (userId: number) => {
   if (error) throw error;
   return posts;
 };
+
+export const getFeed = async (limit: number, cursor: number | undefined) => {
+  let endpoint = `/feed?limit=${limit}`;
+  if (!!cursor) endpoint = `${endpoint}&cursor=${cursor}`;
+  const [feed, error] = await promiseHandler<Array<Post>, Error>(
+    postClient.get(endpoint)
+  );
+  if (error) throw error;
+  return feed;
+};

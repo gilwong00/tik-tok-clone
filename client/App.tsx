@@ -3,8 +3,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { AuthNavigator, HomeNavigator } from './src/navigators';
 import { useUserStore } from './src/store';
-import { ApolloProvider } from '@apollo/client';
-import { client } from './src/graphql';
 import { ActivityIndicator, View } from 'react-native';
 import { COLORS } from './src/constants';
 import { promiseHandler, storage } from './src/utils';
@@ -60,11 +58,9 @@ export default function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ApolloProvider client={client}>
-        <NavigationContainer>
-          {user ? <HomeNavigator /> : <AuthNavigator />}
-        </NavigationContainer>
-      </ApolloProvider>
+      <NavigationContainer>
+        {user ? <HomeNavigator /> : <AuthNavigator />}
+      </NavigationContainer>
     </QueryClientProvider>
   );
 }
