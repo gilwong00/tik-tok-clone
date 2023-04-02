@@ -1,40 +1,40 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 // import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { AuthNavigator, HomeNavigator } from './src/navigators';
 import { useUserStore } from './src/store';
-import { ApolloProvider } from '@apollo/client';
-import { client, GET_USER } from './src/graphql';
-import { ActivityIndicator, Text, View } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 import { COLORS } from './src/constants';
-import { storage } from './src/utils';
+import { promiseHandler, storage } from './src/utils';
 import { STORAGE_KEYS, User } from './src/@types';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { whoami } from './src/api';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const { user, setUser } = useUserStore();
+  const [queryClient] = useState(new QueryClient());
+  const { user, setUser, setAuthToken } = useUserStore();
+
+  const resetState = useCallback(() => {
+    setUser(null);
+    setIsLoading(false);
+  }, []);
 
   useEffect(() => {
     const initApp = async () => {
-      try {
-        const token = await storage.load<string>({ key: STORAGE_KEYS.TOKEN });
-        // fetch active user
-        if (token.length && !user) {
-          const { data } = await client.query<User>({
-            query: GET_USER,
-            variables: {
-              token
-            }
-          });
-
-          if (data) {
-            setUser(data);
-            setIsLoading(false);
-          }
+      const [token, tokenErr] = await promiseHandler<string, Error>(
+        storage.load<string>({ key: STORAGE_KEYS.TOKEN })
+      );
+      if (tokenErr !== null) return resetState();
+      // fetch active user
+      if (token?.length && !user) {
+        setAuthToken(token);
+        const [authUser, err] = await promiseHandler<User, Error>(whoami());
+        if (err !== null) return resetState();
+        if (authUser) {
+          setUser(authUser);
+          setIsLoading(false);
         }
-      } catch (err) {
-        setUser(null);
-        setIsLoading(false);
       }
     };
 
@@ -57,10 +57,10 @@ export default function App() {
   }
 
   return (
-    <ApolloProvider client={client}>
+    <QueryClientProvider client={queryClient}>
       <NavigationContainer>
         {user ? <HomeNavigator /> : <AuthNavigator />}
       </NavigationContainer>
-    </ApolloProvider>
+    </QueryClientProvider>
   );
 }

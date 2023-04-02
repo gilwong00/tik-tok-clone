@@ -57,7 +57,7 @@ const EditProfileScreen = () => {
 
   const handleSave = useCallback(() => {
     if (isEditing) {
-      // do something to save individuaal field change
+      // do something to save individual field change
     }
 
     // do something else
