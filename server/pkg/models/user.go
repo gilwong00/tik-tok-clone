@@ -11,8 +11,8 @@ type AuthUserRequest struct {
 }
 
 type AuthUserResponse struct {
-	User      db.User          `json:"user"`
-	AuthToken *utils.AuthToken `json:"authToken"`
+	User      db.GetUserByEmailRow `json:"user"`
+	AuthToken *utils.AuthToken     `json:"authToken"`
 }
 
 type CreateUserRequest struct {

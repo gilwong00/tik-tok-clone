@@ -17,6 +17,7 @@ SELECT
 	first_name,
 	last_name,
 	email,
+	password,
 	avatar_uri,
 	created_at
 FROM users
@@ -28,6 +29,7 @@ type GetUserByEmailRow struct {
 	FirstName string         `json:"firstName"`
 	LastName  string         `json:"lastName"`
 	Email     string         `json:"email"`
+	Password  string         `json:"password"`
 	AvatarUri sql.NullString `json:"avatarUri"`
 	CreatedAt time.Time      `json:"createdAt"`
 }
@@ -40,6 +42,7 @@ func (q *Queries) GetUserByEmail(ctx context.Context, email string) (GetUserByEm
 		&i.FirstName,
 		&i.LastName,
 		&i.Email,
+		&i.Password,
 		&i.AvatarUri,
 		&i.CreatedAt,
 	)
@@ -85,13 +88,21 @@ WITH unique_users AS (
 	SELECT id, first_name, last_name, email, password, avatar_uri, created_at, updated_at, ts FROM users
 	WHERE id <> $1
 )
-SELECT id, first_name, last_name, email, password, avatar_uri, created_at, updated_at, ts FROM unique_users
-WHERE email LIKE $2 OR first_name LIKE $2
+SELECT
+	id,
+	first_name,
+	last_name,
+	email,
+	avatar_uri,
+	created_at
+FROM unique_users
+WHERE ts @@ to_tsquery('english', $2)
+ORDER BY ts_rank(ts, to_tsquery('english', $2)) DESC
 `
 
 type SearchUsersParams struct {
-	ID    int64  `json:"id"`
-	Email string `json:"email"`
+	ID        int64  `json:"id"`
+	ToTsquery string `json:"toTsquery"`
 }
 
 type SearchUsersRow struct {
@@ -99,16 +110,12 @@ type SearchUsersRow struct {
 	FirstName string         `json:"firstName"`
 	LastName  string         `json:"lastName"`
 	Email     string         `json:"email"`
-	Password  string         `json:"password"`
 	AvatarUri sql.NullString `json:"avatarUri"`
 	CreatedAt time.Time      `json:"createdAt"`
-	UpdatedAt time.Time      `json:"updatedAt"`
-	Ts        interface{}    `json:"ts"`
 }
 
-// TODO improve this query
 func (q *Queries) SearchUsers(ctx context.Context, arg SearchUsersParams) ([]SearchUsersRow, error) {
-	rows, err := q.db.QueryContext(ctx, searchUsers, arg.ID, arg.Email)
+	rows, err := q.db.QueryContext(ctx, searchUsers, arg.ID, arg.ToTsquery)
 	if err != nil {
 		return nil, err
 	}
@@ -121,11 +128,8 @@ func (q *Queries) SearchUsers(ctx context.Context, arg SearchUsersParams) ([]Sea
 			&i.FirstName,
 			&i.LastName,
 			&i.Email,
-			&i.Password,
 			&i.AvatarUri,
 			&i.CreatedAt,
-			&i.UpdatedAt,
-			&i.Ts,
 		); err != nil {
 			return nil, err
 		}
