@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { View, Text, TextInput, FlatList, Image } from 'react-native';
 import { User } from '../../@types';
 import { SafeContainer } from '../../components';
@@ -10,6 +10,11 @@ const DiscoverScreen: React.FC = () => {
   const { data, isLoading } = useSearchUsers({
     query: searchTerm
   });
+
+  const handleSearchTermChange = useCallback((term: string) => {
+    // debounce search term
+    return setTimeout(() => setSearchTerm(term), 2000);
+  }, []);
 
   const renderItem = ({ item }: { item: User }) => {
     return (
@@ -24,7 +29,7 @@ const DiscoverScreen: React.FC = () => {
     <SafeContainer>
       <TextInput
         style={styles.searchInput}
-        onChangeText={setSearchTerm}
+        onChangeText={handleSearchTermChange}
         value={searchTerm}
         placeholder='Search'
       />
