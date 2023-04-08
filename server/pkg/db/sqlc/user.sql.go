@@ -20,7 +20,7 @@ INSERT INTO users (
 ) VALUES (
 	$1, $2, $3, $4, $5
 ) ON CONFLICT DO NOTHING
-RETURNING id, first_name, last_name, email, password, avatar_uri, created_at, updated_at
+RETURNING id, first_name, last_name, email, password, avatar_uri, created_at, updated_at, ts
 `
 
 type CreateUserParams struct {
@@ -49,6 +49,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 		&i.AvatarUri,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.Ts,
 	)
 	return i, err
 }

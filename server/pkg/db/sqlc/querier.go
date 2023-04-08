@@ -12,8 +12,8 @@ type Querier interface {
 	CreatePost(ctx context.Context, arg CreatePostParams) (Post, error)
 	CreateUser(ctx context.Context, arg CreateUserParams) (User, error)
 	GetFeed(ctx context.Context, arg GetFeedParams) ([]Post, error)
-	GetUserByEmail(ctx context.Context, email string) (User, error)
-	GetUserByID(ctx context.Context, id int64) (User, error)
+	GetUserByEmail(ctx context.Context, email string) (GetUserByEmailRow, error)
+	GetUserByID(ctx context.Context, id int64) (GetUserByIDRow, error)
 	GetUserPosts(ctx context.Context, userID int64) ([]Post, error)
 	// TODO improve this query
 	SearchUsers(ctx context.Context, arg SearchUsersParams) ([]SearchUsersRow, error)

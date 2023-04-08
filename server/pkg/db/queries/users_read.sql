@@ -1,9 +1,22 @@
 -- name: GetUserByID :one
-SELECT * FROM users
+SELECT
+	id,
+	first_name,
+	last_name,
+	email,
+	avatar_uri,
+	created_at FROM users
 WHERE id = $1;
 
 -- name: GetUserByEmail :one
-SELECT * FROM users
+SELECT
+	id,
+	first_name,
+	last_name,
+	email,
+	avatar_uri,
+	created_at
+FROM users
 WHERE email = $1;
 
 -- TODO improve this query

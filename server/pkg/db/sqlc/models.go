@@ -29,4 +29,5 @@ type User struct {
 	AvatarUri sql.NullString `json:"avatarUri"`
 	CreatedAt time.Time      `json:"createdAt"`
 	UpdatedAt time.Time      `json:"updatedAt"`
+	Ts        interface{}    `json:"ts"`
 }

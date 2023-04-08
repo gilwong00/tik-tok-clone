@@ -12,53 +12,80 @@ import (
 )
 
 const getUserByEmail = `-- name: GetUserByEmail :one
-SELECT id, first_name, last_name, email, password, avatar_uri, created_at, updated_at FROM users
+SELECT
+	id,
+	first_name,
+	last_name,
+	email,
+	avatar_uri,
+	created_at
+FROM users
 WHERE email = $1
 `
 
-func (q *Queries) GetUserByEmail(ctx context.Context, email string) (User, error) {
+type GetUserByEmailRow struct {
+	ID        int64          `json:"id"`
+	FirstName string         `json:"firstName"`
+	LastName  string         `json:"lastName"`
+	Email     string         `json:"email"`
+	AvatarUri sql.NullString `json:"avatarUri"`
+	CreatedAt time.Time      `json:"createdAt"`
+}
+
+func (q *Queries) GetUserByEmail(ctx context.Context, email string) (GetUserByEmailRow, error) {
 	row := q.db.QueryRowContext(ctx, getUserByEmail, email)
-	var i User
+	var i GetUserByEmailRow
 	err := row.Scan(
 		&i.ID,
 		&i.FirstName,
 		&i.LastName,
 		&i.Email,
-		&i.Password,
 		&i.AvatarUri,
 		&i.CreatedAt,
-		&i.UpdatedAt,
 	)
 	return i, err
 }
 
 const getUserByID = `-- name: GetUserByID :one
-SELECT id, first_name, last_name, email, password, avatar_uri, created_at, updated_at FROM users
+SELECT
+	id,
+	first_name,
+	last_name,
+	email,
+	avatar_uri,
+	created_at FROM users
 WHERE id = $1
 `
 
-func (q *Queries) GetUserByID(ctx context.Context, id int64) (User, error) {
+type GetUserByIDRow struct {
+	ID        int64          `json:"id"`
+	FirstName string         `json:"firstName"`
+	LastName  string         `json:"lastName"`
+	Email     string         `json:"email"`
+	AvatarUri sql.NullString `json:"avatarUri"`
+	CreatedAt time.Time      `json:"createdAt"`
+}
+
+func (q *Queries) GetUserByID(ctx context.Context, id int64) (GetUserByIDRow, error) {
 	row := q.db.QueryRowContext(ctx, getUserByID, id)
-	var i User
+	var i GetUserByIDRow
 	err := row.Scan(
 		&i.ID,
 		&i.FirstName,
 		&i.LastName,
 		&i.Email,
-		&i.Password,
 		&i.AvatarUri,
 		&i.CreatedAt,
-		&i.UpdatedAt,
 	)
 	return i, err
 }
 
 const searchUsers = `-- name: SearchUsers :many
 WITH unique_users AS (
-	SELECT id, first_name, last_name, email, password, avatar_uri, created_at, updated_at FROM users
+	SELECT id, first_name, last_name, email, password, avatar_uri, created_at, updated_at, ts FROM users
 	WHERE id <> $1
 )
-SELECT id, first_name, last_name, email, password, avatar_uri, created_at, updated_at FROM unique_users
+SELECT id, first_name, last_name, email, password, avatar_uri, created_at, updated_at, ts FROM unique_users
 WHERE email LIKE $2 OR first_name LIKE $2
 `
 
@@ -76,6 +103,7 @@ type SearchUsersRow struct {
 	AvatarUri sql.NullString `json:"avatarUri"`
 	CreatedAt time.Time      `json:"createdAt"`
 	UpdatedAt time.Time      `json:"updatedAt"`
+	Ts        interface{}    `json:"ts"`
 }
 
 // TODO improve this query
@@ -97,6 +125,7 @@ func (q *Queries) SearchUsers(ctx context.Context, arg SearchUsersParams) ([]Sea
 			&i.AvatarUri,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.Ts,
 		); err != nil {
 			return nil, err
 		}

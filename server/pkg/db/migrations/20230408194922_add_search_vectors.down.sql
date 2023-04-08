@@ -1,0 +1,7 @@
+BEGIN;
+
+ALTER TABLE users DROP COLUMN ts;
+
+DROP INDEX ts_idx IF EXISTS;
+
+COMMIT;
