@@ -28,3 +28,7 @@ type UserResponse struct {
 	Email     string `json:"email"`
 	AvatarUri string `json:"avatarUri"`
 }
+
+type SearchUserParams struct {
+	Query string `json:"query"`
+}

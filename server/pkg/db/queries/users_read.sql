@@ -33,5 +33,5 @@ SELECT
 	avatar_uri,
 	created_at
 FROM unique_users
-WHERE ts @@ to_tsquery('english', $2)
-ORDER BY ts_rank(ts, to_tsquery('english', $2)) DESC;
+WHERE ts @@ to_tsquery('simple', $2)
+ORDER BY ts_rank(ts, to_tsquery('simple', $2)) DESC;
