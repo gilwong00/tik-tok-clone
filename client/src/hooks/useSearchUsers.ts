@@ -1,10 +1,9 @@
-import { useQuery } from 'react-query';
-import { QueryConfig } from '../@types';
+import { QueryObserverOptions, useQuery } from 'react-query';
 import { searchUsers } from '../api';
 
 interface UseSearchUserParams {
   query?: string;
-  config?: QueryConfig<typeof searchUsers>;
+  config?: QueryObserverOptions;
 }
 
 export const useSearchUsers = ({ query, config }: UseSearchUserParams) => {

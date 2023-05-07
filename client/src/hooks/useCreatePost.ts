@@ -1,9 +1,8 @@
-import { useMutation } from 'react-query';
-import { QueryConfig } from '../@types';
+import { MutationObserverOptions, useMutation } from 'react-query';
 import { createPost } from '../api';
 
 interface UseCreatePostParams {
-  config?: QueryConfig<typeof createPost>;
+  config?: MutationObserverOptions;
 }
 export const useCreatePost = ({ config }: UseCreatePostParams) => {
   return useMutation({

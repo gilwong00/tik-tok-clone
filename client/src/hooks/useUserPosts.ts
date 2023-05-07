@@ -1,10 +1,9 @@
-import { useQuery } from 'react-query';
-import { QueryConfig } from '../@types';
+import { QueryObserverOptions, useQuery } from 'react-query';
 import { getUserPosts } from '../api';
 
 interface UseUserPostsParams {
   userId: number | null;
-  config?: QueryConfig<typeof getUserPosts>;
+  config?: QueryObserverOptions;
 }
 
 export const useUserPosts = ({ userId, config }: UseUserPostsParams) => {
