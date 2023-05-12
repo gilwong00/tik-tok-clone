@@ -1,11 +1,10 @@
-import { useQuery } from 'react-query';
-import { QueryConfig } from '../@types';
-import { getFeed, getUserPosts } from '../api';
+import { QueryObserverOptions, useQuery } from 'react-query';
+import { getFeed } from '../api';
 
 interface UseFeedParams {
   limit: number;
   cursor?: number | undefined;
-  config?: QueryConfig<typeof getUserPosts>;
+  config?: QueryObserverOptions;
 }
 
 export const useGetFeed = ({ limit, cursor, config }: UseFeedParams) => {

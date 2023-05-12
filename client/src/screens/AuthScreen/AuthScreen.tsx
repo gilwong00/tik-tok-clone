@@ -128,7 +128,6 @@ const AuthScreen = () => {
           )}
         </TouchableOpacity>
       </View>
-
       <AuthBanner mode={mode} handleBannerClick={handleBannerClick} />
     </View>
   );
