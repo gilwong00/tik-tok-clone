@@ -1,0 +1,5 @@
+BEGIN;
+
+ALTER TABLE posts ADD COLUMN blob bytea;
+
+COMMIT;

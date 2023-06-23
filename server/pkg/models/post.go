@@ -10,6 +10,7 @@ type CreatePostRequest struct {
 	Description  string `json:"description,omitempty"`
 	Uri          string `json:"uri" binding:"required"`
 	ThumbnailUri string `json:"thumbnailUri,omitempty"`
+	Blob         []byte `json:"blob,omitempty"`
 }
 
 type CreatePostResponse struct {

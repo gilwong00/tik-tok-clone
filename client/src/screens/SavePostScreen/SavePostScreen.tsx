@@ -46,13 +46,17 @@ const SavePostScreen: React.FC<Props> = ({ route }) => {
   );
 
   const handleCreatePost = useCallback(async () => {
-    if (description.length && user?.id?.length) {
+    if (description.length && user?.id) {
+      const res = await fetch(route.params.mediaUri);
+      const blob = await res.blob();
+
       await createPost({
         variables: {
           userId: user.id,
           uri: route.params.mediaUri,
           thumbnailUri: route.params.thumbnail,
-          description
+          description,
+          blob
         }
       });
     }
