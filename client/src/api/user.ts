@@ -8,6 +8,15 @@ const userClient = axios.create({
 });
 userClient.interceptors.request.use(authTokenInterceptor);
 
+export interface CreateUserPayload {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}
+
+export type AuthUserPayload = Pick<CreateUserPayload, 'email' | 'password'>;
+
 export const authUser = async (payload: {
   email: string;
   password: string;
@@ -23,12 +32,7 @@ export const authUser = async (payload: {
   return authUser?.data as AuthResponse;
 };
 
-export const createUser = async (payload: {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-}) => {
+export const createUser = async (payload: CreateUserPayload) => {
   const [user, error] = await promiseHandler<AxiosResponse<User>, Error>(
     userClient.post('/create', payload)
   );

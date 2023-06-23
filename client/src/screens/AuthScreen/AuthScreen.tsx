@@ -12,7 +12,12 @@ import { AuthMode, AuthResponse } from '../../@types';
 import { useUserStore } from '../../store';
 import { COLORS } from '../../constants';
 import { useMutation } from 'react-query';
-import { authUser, createUser } from '../../api';
+import {
+  AuthUserPayload,
+  CreateUserPayload,
+  authUser,
+  createUser
+} from '../../api';
 
 const AuthScreen = () => {
   const [mode, setMode] = useState<AuthMode>(AuthMode.LOGIN);
@@ -22,7 +27,7 @@ const AuthScreen = () => {
   const [password, setPassword] = useState<string>('');
   const { setAuthUser } = useUserStore();
   const createUserMutation = useMutation(
-    (payload: any) => createUser(payload),
+    (payload: CreateUserPayload) => createUser(payload),
     {
       onSuccess() {
         setMode(AuthMode.LOGIN);
@@ -30,12 +35,15 @@ const AuthScreen = () => {
       }
     }
   );
-  const authUserMutation = useMutation((payload: any) => authUser(payload), {
-    onSuccess(data: AuthResponse) {
-      resetState();
-      setAuthUser(data);
+  const authUserMutation = useMutation(
+    (payload: AuthUserPayload) => authUser(payload),
+    {
+      onSuccess(data: AuthResponse) {
+        resetState();
+        setAuthUser(data);
+      }
     }
-  });
+  );
 
   const resetState = () => {
     setFirstName('');
@@ -67,9 +75,9 @@ const AuthScreen = () => {
         };
     // TODO add payload validation
     if (isSignUp) {
-      return await createUserMutation.mutateAsync(payload);
+      return await createUserMutation.mutateAsync(payload as CreateUserPayload);
     }
-    return await authUserMutation.mutateAsync(payload);
+    return await authUserMutation.mutateAsync(payload as AuthUserPayload);
   }, [email, password]);
 
   const authText: string = mode === AuthMode.LOGIN ? 'Log In' : 'Sign Up';

@@ -6,8 +6,6 @@ services:
     container_name: tik_tok_pg
     env_file:
       - ./config/docker.env
-    environment:
-      - POSTGRES_PASSWORD=postgres
     ports:
       - '5432:5432'
   redis:
