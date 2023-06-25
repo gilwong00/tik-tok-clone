@@ -59,9 +59,6 @@ export const searchUsers = async (query: string) => {
     AxiosResponse<Array<User>>,
     Error
   >(userClient.get(`/search?query=${query}`));
-
-  if (error !== null) {
-    throw error;
-  }
+  if (error !== null) throw error;
   return users?.data ?? [];
 };

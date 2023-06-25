@@ -26,7 +26,7 @@ func (s *Server) CreatePost(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, err)
 		return
 	}
-	ctx.JSON(http.StatusOK, models.CreatePostResponse{
+	ctx.IndentedJSON(http.StatusOK, models.CreatePostResponse{
 		ID:           newPost.ID,
 		UserID:       newPost.UserID,
 		Description:  newPost.Description.String,
@@ -54,7 +54,7 @@ func (s *Server) GetFeed(ctx *gin.Context) {
 		return
 	}
 	f, c := paginateFeed(feeds, req.Limit)
-	ctx.JSON(http.StatusOK, models.GetFeedResponse{
+	ctx.IndentedJSON(http.StatusOK, models.GetFeedResponse{
 		Feed:   f,
 		Cursor: c,
 	})

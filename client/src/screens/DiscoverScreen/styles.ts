@@ -27,5 +27,8 @@ export const styles = StyleSheet.create({
     width: 40,
     borderRadius: 20
   },
-  text: {}
+  text: {},
+  loadingContainer: {
+    marginTop: 10
+  }
 });

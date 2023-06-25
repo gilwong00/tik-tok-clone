@@ -1,4 +1,4 @@
-import create from 'zustand';
+import { create } from 'zustand';
 import { AuthResponse, STORAGE_KEYS, User } from '../@types';
 import { storage } from '../utils';
 

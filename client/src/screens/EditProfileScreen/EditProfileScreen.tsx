@@ -66,7 +66,7 @@ const EditProfileScreen = () => {
   return (
     <SafeContainer>
       <ProfileHeader
-        title={editForm.title || 'Some other value'}
+        title={editForm.title || ''}
         leftIcon='arrow-back'
         rightIcon='save'
         handleLeftIconPress={handleReturnToProfile}

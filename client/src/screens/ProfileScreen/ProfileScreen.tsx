@@ -13,8 +13,6 @@ const ProfileScreen = () => {
 
   const userName = `${user?.firstName} ${user?.lastName}`;
 
-  if (isLoading) return <Text>Loading....</Text>;
-
   return (
     <View style={styles.container}>
       <ProfileHeader
@@ -25,9 +23,15 @@ const ProfileScreen = () => {
         handleRightIconPress={() => {}}
       />
       <View style={styles.sectionContainer}>
-        <ProfileSection name={userName} />
-        {Array.isArray(data) && (
-          <Posts posts={data} handleRefresh={refetch} loading={isLoading} />
+        {isLoading ? (
+          <Text>Loading....</Text>
+        ) : (
+          <>
+            <ProfileSection name={userName} />
+            {Array.isArray(data) && (
+              <Posts posts={data} handleRefresh={refetch} loading={isLoading} />
+            )}
+          </>
         )}
       </View>
     </View>

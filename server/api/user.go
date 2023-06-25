@@ -61,7 +61,7 @@ func (s *Server) CreateUser(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, err)
 		return
 	}
-	ctx.JSON(http.StatusOK, models.UserResponse{
+	ctx.IndentedJSON(http.StatusOK, models.UserResponse{
 		FirstName: newUser.FirstName,
 		LastName:  newUser.LastName,
 		Email:     newUser.Email,
@@ -81,31 +81,45 @@ func (s *Server) Whoami(ctx *gin.Context) {
 			ctx.JSON(http.StatusInternalServerError, err)
 			return
 		}
-		ctx.JSON(http.StatusOK, models.UserResponse{
+		ctx.IndentedJSON(http.StatusOK, models.UserResponse{
 			FirstName: user.FirstName,
 			LastName:  user.LastName,
 			Email:     user.Email,
 			AvatarUri: user.AvatarUri.String,
 		})
+		return
 	}
 	ctx.JSON(http.StatusBadRequest, errors.New("no user"))
 }
 
 func (s *Server) SearchUsers(ctx *gin.Context) {
-	var req models.SearchUserParams
-	if err := ctx.ShouldBindUri(&req); err != nil {
-		ctx.JSON(http.StatusBadRequest, err)
+	query := ctx.Query("query")
+	if len(query) == 0 {
+		ctx.JSON(http.StatusBadRequest, errors.New("query is required"))
 		return
 	}
 	userId := ctx.MustGet("user_id").(int64)
 	results, err := s.queries.SearchUsers(ctx, db.SearchUsersParams{
 		ID:        userId,
-		ToTsquery: fmt.Sprintf("%s:*", req.Query),
+		ToTsquery: fmt.Sprintf("%s:*", query),
 	})
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err)
 	}
-	ctx.JSON(http.StatusOK,
-		results,
+	ctx.IndentedJSON(http.StatusOK,
+		searchResultToUserResponse(results),
 	)
+}
+
+func searchResultToUserResponse(searchResults []db.SearchUsersRow) []models.UserResponse {
+	var results []models.UserResponse
+	for _, result := range searchResults {
+		results = append(results, models.UserResponse{
+			FirstName: result.FirstName,
+			LastName:  result.LastName,
+			Email:     result.Email,
+			AvatarUri: result.AvatarUri.String,
+		})
+	}
+	return results
 }
