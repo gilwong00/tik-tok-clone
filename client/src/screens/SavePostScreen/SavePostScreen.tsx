@@ -45,18 +45,25 @@ const SavePostScreen: React.FC<Props> = ({ route }) => {
     []
   );
 
+  const blobToBase64 = (blob: Blob) => {
+    return new Promise((resolve, _) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result);
+      reader.readAsDataURL(blob);
+    });
+  };
+
   const handleCreatePost = useCallback(async () => {
     if (description.length && user?.id) {
       const res = await fetch(route.params.mediaUri);
-      const blob = await res.blob();
-
+      const postBlob = await res.blob();
       await createPost({
         variables: {
-          userId: user.id,
+          userId: user?.id ?? '',
           uri: route.params.mediaUri,
           thumbnailUri: route.params.thumbnail,
           description,
-          blob
+          blob: blobToBase64(postBlob)
         }
       });
     }

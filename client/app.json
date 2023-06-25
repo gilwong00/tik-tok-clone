@@ -11,9 +11,6 @@
 			"resizeMode": "contain",
 			"backgroundColor": "#ffffff"
 		},
-		"updates": {
-			"fallbackToCacheTimeout": 0
-		},
 		"assetBundlePatterns": [
 			"**/*"
 		],
@@ -23,14 +20,11 @@
 		"android": {
 			"adaptiveIcon": {
 				"foregroundImage": "./assets/adaptive-icon.png",
-				"backgroundColor": "#FFFFFF"
+				"backgroundColor": "#ffffff"
 			}
 		},
 		"web": {
 			"favicon": "./assets/favicon.png"
-		},
-		"plugins": [
-			"expo-community-flipper"
-		]
+		}
 	}
 }

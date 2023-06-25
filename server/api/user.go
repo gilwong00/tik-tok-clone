@@ -82,6 +82,7 @@ func (s *Server) Whoami(ctx *gin.Context) {
 			return
 		}
 		ctx.IndentedJSON(http.StatusOK, models.UserResponse{
+			ID:        user.ID,
 			FirstName: user.FirstName,
 			LastName:  user.LastName,
 			Email:     user.Email,

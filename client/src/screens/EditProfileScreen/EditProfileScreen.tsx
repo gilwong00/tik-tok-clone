@@ -37,7 +37,7 @@ const EditProfileScreen = () => {
       quality: 1
     });
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       // save as new avatarUri
       // update userState
     }

@@ -36,7 +36,7 @@ func (server *Server) initRoutes() {
 
 	//post routes
 	api.Use(middleware.AuthMiddleware).GET("/feed", server.GetFeed)
-	api.Use(middleware.AuthMiddleware).POST("/feed/create", server.CreatePost)
+	api.Use(middleware.AuthMiddleware).POST("/post/create", server.CreatePost)
 
 	server.router = router
 }

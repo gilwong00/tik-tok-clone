@@ -20,7 +20,7 @@ func (s *Server) CreatePost(ctx *gin.Context) {
 		Description:  utils.NewNullString(req.Description),
 		Uri:          req.Uri,
 		ThumbnailUri: utils.NewNullString(req.ThumbnailUri),
-		Blob:         req.Blob,
+		Blob:         []byte(req.Blob),
 	})
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err)

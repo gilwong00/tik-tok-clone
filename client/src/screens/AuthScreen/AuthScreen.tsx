@@ -118,6 +118,7 @@ const AuthScreen = () => {
           value={password}
           secureTextEntry
           autoCapitalize='none'
+          returnKeyType='done'
         />
         <TouchableOpacity
           style={styles.authBtn}

@@ -5,13 +5,17 @@ import { authTokenInterceptor } from './auth';
 import { CreatePostPayload } from '../hooks';
 
 const postClient = axios.create({
-  baseURL: 'localhost:5000/api/post'
+  baseURL: 'http://localhost:5000/api/post'
+});
+const feedClient = axios.create({
+  baseURL: 'http://localhost:5000/api/feed'
 });
 postClient.interceptors.request.use(authTokenInterceptor);
+feedClient.interceptors.request.use(authTokenInterceptor);
 
 export const createPost = async (payload: CreatePostPayload) => {
   const [post, error] = await promiseHandler<Post, Error>(
-    postClient.post('/', payload)
+    postClient.post('/create', payload)
   );
 
   if (error !== null) throw error;
@@ -27,10 +31,10 @@ export const getUserPosts = async (userId: number) => {
 };
 
 export const getFeed = async (limit: number, cursor: number | undefined) => {
-  let endpoint = `/feed?limit=${limit}`;
+  let endpoint = `?limit=${limit}`;
   if (!!cursor) endpoint = `${endpoint}&cursor=${cursor}`;
   const [feed, error] = await promiseHandler<Array<Post>, Error>(
-    postClient.get(endpoint)
+    feedClient.get(endpoint)
   );
   if (error) throw error;
   return feed;

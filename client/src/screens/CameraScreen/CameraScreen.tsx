@@ -113,15 +113,15 @@ const CameraScreen = () => {
 
   const selectAssetFromGallery = useCallback(async () => {
     const results: ImagePickerResult = await launchImageLibraryAsync({
-      mediaTypes: MediaTypeOptions.Videos,
+      // mediaTypes: MediaTypeOptions.Videos,
       allowsEditing: true,
       aspect: [16, 9],
       quality: 1 // smaller the number the lower the quality
     });
 
-    if (!results.cancelled) {
-      const thumbnail = await generateThumbnail(results.uri);
-      redirectToSavePostScreen(results.uri, thumbnail);
+    if (!results.canceled) {
+      const thumbnail = await generateThumbnail(results.assets[0].uri);
+      redirectToSavePostScreen(results.assets[0].uri, thumbnail);
     }
   }, []);
 
