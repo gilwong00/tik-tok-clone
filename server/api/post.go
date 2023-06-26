@@ -15,13 +15,16 @@ func (s *Server) CreatePost(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, err)
 		return
 	}
-	newPost, err := s.queries.CreatePost(ctx, db.CreatePostParams{
+	dbParams := db.CreatePostParams{
 		UserID:       req.UserID,
 		Description:  utils.NewNullString(req.Description),
 		Uri:          req.Uri,
 		ThumbnailUri: utils.NewNullString(req.ThumbnailUri),
-		Blob:         []byte(req.Blob),
-	})
+	}
+	if len(req.Blob) > 0 {
+		dbParams.Blob = []byte(req.Blob)
+	}
+	newPost, err := s.queries.CreatePost(ctx, dbParams)
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, err)
 		return

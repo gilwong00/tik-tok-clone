@@ -4,6 +4,7 @@ import {
   Camera,
   CameraType,
   FlashMode,
+  VideoCodec,
   // VideoCodec,
   VideoQuality
 } from 'expo-camera';
@@ -65,13 +66,13 @@ const CameraScreen = () => {
 
   const redirectToSavePostScreen = useCallback(
     (uri: string, thumbnail: string) => {
-      navigation.navigate(
-        ScreenNames.SAVE_POST as never,
-        {
+      return navigation.navigate({
+        name: ScreenNames.SAVE_POST,
+        params: {
           mediaUri: uri,
           thumbnail
-        } as never
-      );
+        }
+      } as never);
     },
     []
   );
@@ -96,8 +97,8 @@ const CameraScreen = () => {
       try {
         const data = await cameraRef.recordAsync({
           maxDuration: 60,
-          quality: VideoQuality['480p']
-          // codec: VideoCodec.JPEG,
+          quality: VideoQuality['480p'],
+          codec: VideoCodec.H264
         });
         const thumbnail = await generateThumbnail(data.uri);
         return redirectToSavePostScreen(data.uri, thumbnail);
@@ -113,7 +114,7 @@ const CameraScreen = () => {
 
   const selectAssetFromGallery = useCallback(async () => {
     const results: ImagePickerResult = await launchImageLibraryAsync({
-      // mediaTypes: MediaTypeOptions.Videos,
+      mediaTypes: MediaTypeOptions.Videos,
       allowsEditing: true,
       aspect: [16, 9],
       quality: 1 // smaller the number the lower the quality

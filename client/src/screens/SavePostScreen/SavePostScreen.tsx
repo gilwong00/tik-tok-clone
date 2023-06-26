@@ -55,15 +55,17 @@ const SavePostScreen: React.FC<Props> = ({ route }) => {
 
   const handleCreatePost = useCallback(async () => {
     if (description.length && user?.id) {
-      const res = await fetch(route.params.mediaUri);
-      const postBlob = await res.blob();
+      // at some point i would like to save the blob to the DB
+      // but expo camera doesnt return a uri that parses to a blob well
+      // const res = await fetch(route.params.mediaUri);
+      // const postBlob = await res.blob();
       await createPost({
         variables: {
           userId: user?.id ?? '',
           uri: route.params.mediaUri,
           thumbnailUri: route.params.thumbnail,
-          description,
-          blob: blobToBase64(postBlob)
+          description
+          // blob: blobToBase64(postBlob)
         }
       });
     }
