@@ -15,7 +15,7 @@ export interface CreatePostPayload {
 }
 
 export const useCreatePost = ({ config }: UseCreatePostParams) => {
-  return useMutation<unknown, unknown, any, unknown>({
+  return useMutation<unknown, unknown, never, unknown>({
     mutationFn: (payload: CreatePostPayload) => createPost(payload),
     ...config
   });
